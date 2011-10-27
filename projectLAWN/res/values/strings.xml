@@ -5,5 +5,7 @@
     <string name="app_name">Project LAWN</string>
     <string name="all_time">All Time Impressions: </string>
     <string name="today">Today\'s Impressions: </string>
+    <string name="history_title">Historical Data</string>
+    <string name="prefs_title">Preferences</string>
 
 </resources>
