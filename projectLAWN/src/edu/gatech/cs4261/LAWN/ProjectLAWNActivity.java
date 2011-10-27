@@ -1,13 +1,14 @@
 package edu.gatech.cs4261.LAWN;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class ProjectLAWNActivity extends Activity {
+public class ProjectLAWNActivity extends CustomActivity {
 	/** constants needed*/
 	private static final String TAG = "Project LAWN Main";
 	
@@ -30,6 +31,8 @@ public class ProjectLAWNActivity extends Activity {
     private OnClickListener btnScanListener = new OnClickListener() {
 		public void onClick(View v) {
 			Log.d(TAG, "Scan clicked");
+			
+			/**TODO: Start scanning*/
 		}
     };
     
@@ -37,6 +40,10 @@ public class ProjectLAWNActivity extends Activity {
     private OnClickListener btnHistoryListener = new OnClickListener() {
 		public void onClick(View v) {
 			Log.d(TAG, "History clicked");
+			
+			/** TODO: Send to History screen*/
+			//make the intent to call the new screen
+			Intent i = new Intent(this, History.class);
 		}
     };
     
@@ -44,6 +51,8 @@ public class ProjectLAWNActivity extends Activity {
     private OnClickListener btnPrefListener = new OnClickListener() {
 		public void onClick(View v) {
 			Log.d(TAG, "Preferences clicked");
+			
+			/** TODO: Send to Preferences screen*/
 		}
     };
 }
