@@ -3,7 +3,7 @@
 
     <string name="hello">Hello World, ProjectLAWNActivity!</string>
     <string name="app_name">Project LAWN</string>
-    <string name="alltime">All Time Impressions: </string>
-    <string name="today">Today's Impressions: </string>
+    <string name="all_time">All Time Impressions: </string>
+    <string name="today">Today\'s Impressions: </string>
 
 </resources>

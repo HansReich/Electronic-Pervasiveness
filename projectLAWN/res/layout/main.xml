@@ -3,23 +3,21 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" 
-    android:background="@drawable/darkgrey"
     android:padding="10dp">
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name" 
-        android:layout_alignParentCenter="true" />
+        android:layout_centerHorizontal="true" />
         
     <TextView
         android:id="@+id/all_time_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/allTime" 
-        android:layout_below="@id/title"
-        android:layout_alignParentCenter="true" />
+        android:text="@string/all_time" 
+        android:layout_below="@id/title" />
         
     <TextView
         android:id="@+id/all_time_stat"
@@ -34,8 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/today" 
-        android:layout_below="@id/all_time_label"
-        android:layout_alignParentCenter="true" />
+        android:layout_below="@id/all_time_label" />
         
     <TextView
         android:id="@+id/today_stat"
@@ -46,19 +43,11 @@
         android:layout_alignTop="@id/today_label" />
         
     <Button
-        android:id="@+id/btnScan"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="SCAN!"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentCenter="true" />
-        
-    <Button
         android:id="@+id/btnHistory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="History"
-        android:layout_below="@id/btnScan" />
+        android:layout_alignParentBottom="true" />
         
     <Button
         android:id="@+id/btnPref"
@@ -67,6 +56,13 @@
         android:text="Preferences"
         android:layout_alignTop="@id/btnHistory"
         android:layout_toRightOf="@id/btnHistory" />
-
+        
+    <Button
+        android:id="@+id/btnScan"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="SCAN!"
+        android:layout_above="@id/btnHistory"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
