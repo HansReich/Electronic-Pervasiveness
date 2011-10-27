@@ -10,8 +10,27 @@ public class LAWNApp extends Application {
 	private static LAWNApp instance; 
 	
 	/** The SharedPreferences provider that the application will use. */
-	SharedPreferences preferences;
+	private SharedPreferences preferences;
 	
+	private DeviceDiscover discover;
+	
+	/** Set up our singleton. */
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		instance = this;
+
+		preferences = getSharedPreferences(Common.MAIN_PREFERENCES,
+				Context.MODE_PRIVATE);
+	}
+	
+	public DeviceDiscover getDiscover() {
+		return discover;
+	}
+	
+	public void setDiscover(DeviceDiscover discover) {
+		this.discover = discover;
+	}
 	
 	public static LAWNApp getInstance() {
 		return instance;
@@ -27,15 +46,5 @@ public class LAWNApp extends Application {
 
 	public void setPreferences(SharedPreferences preferences) {
 		this.preferences = preferences;
-	}
-	
-	/** Set up our singleton. */
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		instance = this;
-
-		preferences = getSharedPreferences(Common.MAIN_PREFERENCES,
-				Context.MODE_PRIVATE);
 	}
 }
