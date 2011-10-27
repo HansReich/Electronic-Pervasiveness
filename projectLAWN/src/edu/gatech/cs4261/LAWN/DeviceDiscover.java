@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 public abstract class DeviceDiscover {
 	private String protocolType;
+	private boolean serviceAvailable;
+	
+	public abstract boolean isServiceAvailable();
+	
+	public abstract void setServiceAvailable();
 	
 	public abstract ArrayList<Device> scan();
 	
