@@ -8,6 +8,6 @@ public class ProjectLAWNActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.prefs);
+        setContentView(R.layout.main);
     }
 }
