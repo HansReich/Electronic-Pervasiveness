@@ -46,6 +46,7 @@
         android:id="@+id/btnHistory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onHistoryClicked"
         android:text="History"
         android:layout_alignParentBottom="true" />
         
@@ -53,6 +54,7 @@
         android:id="@+id/btnPref"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onPrefClicked"
         android:text="Preferences"
         android:layout_alignTop="@id/btnHistory"
         android:layout_toRightOf="@id/btnHistory" />
@@ -61,6 +63,7 @@
         android:id="@+id/btnScan"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:onClick="onScanClicked"
         android:text="SCAN!"
         android:layout_above="@id/btnHistory"
         android:layout_centerHorizontal="true" />
