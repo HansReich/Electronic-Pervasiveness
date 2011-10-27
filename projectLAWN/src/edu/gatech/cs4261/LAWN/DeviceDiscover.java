@@ -2,7 +2,9 @@ package edu.gatech.cs4261.LAWN;
 
 import java.util.ArrayList;
 
-public abstract class DeviceDiscover {
+import android.app.Activity;
+
+public abstract class DeviceDiscover extends Activity {
 	private String protocolType;
 	private boolean serviceAvailable;
 	
@@ -15,5 +17,7 @@ public abstract class DeviceDiscover {
 	public abstract String getProtocolType();
 	
 	public abstract void setProtocolType(String protocolType);
+	
+	public abstract void setUp();
 	
 }
