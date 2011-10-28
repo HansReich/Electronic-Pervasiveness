@@ -1,6 +1,7 @@
 package edu.gatech.cs4261.LAWN;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.Button;
 public class ProjectLAWNActivity extends CustomActivity {
 	/** constants needed*/
 	private static final String TAG = "Project LAWN Main";
+	private Context ctx = this;
 	
     /** Called when the activity is first created. */
     @Override
@@ -43,7 +45,11 @@ public class ProjectLAWNActivity extends CustomActivity {
 			
 			/** TODO: Send to History screen*/
 			//make the intent to call the new screen
-			Intent i = new Intent(this, History.class);
+			Intent i = new Intent();
+			i.setClass(ctx, History.class);
+			
+			//start the new activity
+			ctx.startActivity(i);
 		}
     };
     

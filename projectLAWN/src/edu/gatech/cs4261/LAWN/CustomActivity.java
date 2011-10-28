@@ -6,6 +6,6 @@ import android.os.Bundle;
 public class CustomActivity extends Activity {
 	/** called when the activity is first made*/
 	public void onCreate(Bundle savedInstanceState) {
-		
+		super.onCreate(savedInstanceState);
 	}
 }
