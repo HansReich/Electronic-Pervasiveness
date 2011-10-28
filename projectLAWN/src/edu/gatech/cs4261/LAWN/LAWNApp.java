@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+/** This class is Reid's single instance application thing*/
 public class LAWNApp extends Application {
 	
 	/** The instance of this Application. */
