@@ -8,22 +8,34 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class BluetoothDiscover for discovering bluetooth devices
+ */
 public class BluetoothDiscover extends DeviceDiscover {
 	// Class variables
-	private static final String TAG = "BluetoothDiscover";
-	private static String protocolType = "Bluetooth";
-	private BluetoothAdapter mBluetoothAdapter;
+	private static final String TAG = "BluetoothDiscover";	
+	/** The protocol type. */
+	private static String protocolType = "Bluetooth";	
+	/** The current bluetooth adapter. */
+	private BluetoothAdapter curBluetoothAdapter;
 	
 	 // Intent request codes (from the Internet)
-    private static final int REQUEST_CONNECT_DEVICE_SECURE = 1;
-    private static final int REQUEST_CONNECT_DEVICE_INSECURE = 2;
+ 	private static final int REQUEST_CONNECT_DEVICE_SECURE = 1;  
+    private static final int REQUEST_CONNECT_DEVICE_INSECURE = 2; 
     private static final int REQUEST_ENABLE_BT = 3;
 
+	/* (non-Javadoc)
+	 * @see edu.gatech.cs4261.LAWN.DeviceDiscover#getProtocolType()
+	 */
 	@Override
 	public String getProtocolType() {
 		return protocolType;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.gatech.cs4261.LAWN.DeviceDiscover#isServiceAvailable()
+	 */
 	@Override
 	public boolean isServiceAvailable() {		
 		if (checkForBluetoothAdapter()) {
@@ -31,7 +43,7 @@ public class BluetoothDiscover extends DeviceDiscover {
 			return false;
 		}
 		else{
-			if (!mBluetoothAdapter.isEnabled()) {
+			if (!curBluetoothAdapter.isEnabled()) {
 				//there is bluetooth but it is not enabled
 			    return false;
 			} else {
@@ -41,6 +53,9 @@ public class BluetoothDiscover extends DeviceDiscover {
 		}
 	}
 	
+	/**
+	 * Request bluetooth enable.
+	 */
 	public void requestBluetoothEnable(){
 		Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 	    // This should make a pop up asking the user to allow
@@ -48,6 +63,9 @@ public class BluetoothDiscover extends DeviceDiscover {
 	    startActivityForResult(enableBluetoothIntent, REQUEST_ENABLE_BT);
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -58,10 +76,15 @@ public class BluetoothDiscover extends DeviceDiscover {
 		}
 	}
 
+	/**
+	 * Check for bluetooth adapter.
+	 *
+	 * @return true, if successful
+	 */
 	private boolean checkForBluetoothAdapter() {
-		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		curBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		// If the adapter is null, then Bluetooth is not supported
-        if (mBluetoothAdapter == null) {            
+        if (curBluetoothAdapter == null) {            
             if(Common.DEBUG) {
             	Log.w(TAG, "Bluetooth is not available");
             } else {
@@ -76,13 +99,16 @@ public class BluetoothDiscover extends DeviceDiscover {
         }
 	}
 	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onStart()
+	 */
 	@Override
     public void onStart() {
         super.onStart();
         if(Common.DEBUG) Log.e(TAG, "ON START");
 
         // If Bluetooth is not on, request that it be enabled.
-        if (!mBluetoothAdapter.isEnabled()) {
+        if (!curBluetoothAdapter.isEnabled()) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
         // Otherwise, setup the ability to scan
@@ -91,6 +117,9 @@ public class BluetoothDiscover extends DeviceDiscover {
         }
     }
 	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onResume()
+	 */
 	@Override
     public synchronized void onResume() {
         super.onResume();
@@ -102,18 +131,27 @@ public class BluetoothDiscover extends DeviceDiscover {
         // TODO put some code to handle the restarting of bluetooth
     }
 	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onPause()
+	 */
 	@Override
     public synchronized void onPause() {
         super.onPause();
         if(Common.DEBUG) Log.v(TAG, "- ON PAUSE -");
     }
 
+    /* (non-Javadoc)
+     * @see android.app.Activity#onStop()
+     */
     @Override
     public void onStop() {
         super.onStop();
         if(Common.DEBUG) Log.v(TAG, "-- ON STOP --");
     }
 
+    /* (non-Javadoc)
+     * @see android.app.Activity#onDestroy()
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -123,9 +161,12 @@ public class BluetoothDiscover extends DeviceDiscover {
     }
     
     //this method came from google not sure what it does 
+    /**
+     * Ensure discoverable.
+     */
     private void ensureDiscoverable() {
         if(Common.DEBUG) Log.d(TAG, "ensure discoverable");
-        if (mBluetoothAdapter.getScanMode() !=
+        if (curBluetoothAdapter.getScanMode() !=
             BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
             discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
@@ -133,12 +174,18 @@ public class BluetoothDiscover extends DeviceDiscover {
         }
     }
 	
+	/* (non-Javadoc)
+	 * @see edu.gatech.cs4261.LAWN.DeviceDiscover#scan()
+	 */
 	@Override
 	public ArrayList<Device> scan() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.gatech.cs4261.LAWN.DeviceDiscover#setProtocolType(java.lang.String)
+	 */
 	@Override
 	public void setProtocolType(String protocolType) {
 		this.protocolType = protocolType;		
