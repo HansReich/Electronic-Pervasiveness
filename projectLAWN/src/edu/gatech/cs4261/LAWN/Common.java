@@ -8,4 +8,6 @@ public class Common {
 	
 	public static final String MAIN_PREFERENCES = "PREFERENCES";
 	
+	public static final boolean DEBUG = true;
+	
 }

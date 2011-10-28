@@ -2,13 +2,12 @@ package edu.gatech.cs4261.LAWN;
 
 import java.util.ArrayList;
 
-public abstract class DeviceDiscover {
+import android.app.Activity;
+
+public abstract class DeviceDiscover extends Activity {
 	private String protocolType;
-	private boolean serviceAvailable;
 	
 	public abstract boolean isServiceAvailable();
-	
-	public abstract void setServiceAvailable();
 	
 	public abstract ArrayList<Device> scan();
 	
