@@ -21,10 +21,15 @@ public class ProjectLAWNActivity extends CustomActivity {
         setContentView(R.layout.main);
         
         /* set up the button listeners*/
+        /* enable scanning*/
 		Button btnScan = (Button)findViewById(R.id.btnScan);
 		btnScan.setOnClickListener(btnScanListener);
+		
+		/* pull up new screen with data history*/
 		Button btnHistory = (Button)findViewById(R.id.btnHistory);
 		btnHistory.setOnClickListener(btnHistoryListener);
+		
+		/* pull up new screen with preferences on it*/
 		Button btnPref = (Button)findViewById(R.id.btnPref);
 		btnPref.setOnClickListener(btnPrefListener);
     }
@@ -43,10 +48,9 @@ public class ProjectLAWNActivity extends CustomActivity {
 		public void onClick(View v) {
 			Log.d(TAG, "History clicked");
 			
-			/** TODO: Send to History screen*/
+			/* Send to History screen*/
 			//make the intent to call the new screen
-			Intent i = new Intent();
-			i.setClass(ctx, History.class);
+			Intent i = new Intent(ProjectLAWNActivity.this, History.class);
 			
 			Log.d(TAG, "made the intent");
 			
@@ -62,7 +66,12 @@ public class ProjectLAWNActivity extends CustomActivity {
 		public void onClick(View v) {
 			Log.d(TAG, "Preferences clicked");
 			
-			/** TODO: Send to Preferences screen*/
+			/* Send to Preferences screen*/
+			//make the intent to call the new screen
+			//Intent i = new Intent(ProjectLAWNActivity.this, Preferences.class);
+			
+			//start the new activity
+			//ctx.startActivity(i);
 		}
     };
 }

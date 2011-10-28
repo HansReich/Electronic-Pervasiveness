@@ -10,8 +10,8 @@ public class History extends CustomActivity {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.history);
         
-        /* DEBUG*/
+        /* DEBUG
         Toast debug = Toast.makeText(getBaseContext(), "In History Class", Toast.LENGTH_SHORT);
-		debug.show();
+		debug.show();*/
 	}
 }
