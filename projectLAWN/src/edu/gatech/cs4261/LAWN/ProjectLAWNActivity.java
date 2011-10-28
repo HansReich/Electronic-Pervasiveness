@@ -48,8 +48,12 @@ public class ProjectLAWNActivity extends CustomActivity {
 			Intent i = new Intent();
 			i.setClass(ctx, History.class);
 			
+			Log.d(TAG, "made the intent");
+			
 			//start the new activity
 			ctx.startActivity(i);
+			
+			Log.d(TAG, "started the activity");
 		}
     };
     
