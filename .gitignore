@@ -39,3 +39,6 @@ Thumbs.db
 projectLAWN/gen
 projectLAWN/bin
 
+# Eclipse files #
+#################
+projectLAWN/.settings
