@@ -2,6 +2,7 @@ package edu.gatech.cs4261.LAWN;
 
 import android.os.Bundle;
 import android.widget.Toast;
+import edu.gatech.cs4261.LAWN.Log;
 
 public class History extends CustomActivity {
 	/*called when the class is first made*/

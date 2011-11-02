@@ -2,14 +2,14 @@ package edu.gatech.cs4261.LAWN;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import edu.gatech.cs4261.LAWN.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class Preferences extends CustomActivity {
 	/* constants*/
-	private static final String TAG = "Project LAWN Preferences";
+	private static final String TAG = "Preferences";
 	private Context ctx = this;
 	
 	/*called when the class is first made*/
