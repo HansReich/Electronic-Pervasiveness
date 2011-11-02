@@ -38,7 +38,7 @@ public class BluetoothDiscover extends DeviceDiscover {
             	
             	// Get the BluetoothDevice object from the Intent
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                
+                Log.v(TAG,"Device address: " + device.getAddress());
 	        }
             else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 Log.v(TAG,"Entered the Finished ");
@@ -95,7 +95,7 @@ public class BluetoothDiscover extends DeviceDiscover {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if(Common.DEBUG) Log.v(TAG, "ON CREATE");
-		
+		curBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		if(checkForBluetoothAdapter()){
 			//TODO set up bluetooth things
 		}
@@ -109,7 +109,7 @@ public class BluetoothDiscover extends DeviceDiscover {
 	private boolean checkForBluetoothAdapter() {
 		if(Common.DEBUG) Log.v(TAG, "checkForBluetoothAdapter");
 		
-		curBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		
 		// If the adapter is null, then Bluetooth is not supported
         if (curBluetoothAdapter == null) {            
             if(Common.DEBUG) {
