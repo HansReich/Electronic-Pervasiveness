@@ -8,7 +8,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.util.Log;
 
 public class LAWNStorage extends ContentProvider {
 	/* constants*/
@@ -17,6 +19,24 @@ public class LAWNStorage extends ContentProvider {
     private static final int DATABASE_VERSION = 1;
     private static final String DEVICES_TABLE_NAME = "devices";
     private static final String DETECTIONS_TABLE_NAME = "detections";
+    private static final UriMatcher um;
+    private static final String AUTHORITY = "edu.gatech.cs4261.LAWN.LAWNStorage";
+    
+    //define the content uris
+    public static final Uri CONTENT_URI = 
+    		Uri.parse("content://edu.gatech.cs4261.LAWN.LAWNStorage");
+    public static final Uri CONTENT_URI_DEVICES = 
+    		Uri.parse("content://" + AUTHORITY + "/" + DEVICES_TABLE_NAME);
+    public static final Uri CONTENT_URI_DETECTIONS = 
+    		Uri.parse("content://" + AUTHORITY + "/" + DETECTIONS_TABLE_NAME);
+    
+    //set up the special constants
+    static {
+    	um = new UriMatcher(UriMatcher.NO_MATCH);
+    	
+    	//set up query matches
+    	//um.addURI(AUTHORITY, "devices", DEVICES);
+    }
 
     /* TODO: this class helps open, create, and upgrade the database file*/
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -48,11 +68,17 @@ public class LAWNStorage extends ContentProvider {
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			// TODO Auto-generated method stub
-			
+			Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
+                    + newVersion + ", which will destroy all old data");
+            db.execSQL("DROP TABLE IF EXISTS " + DEVICES_TABLE_NAME);
+            db.execSQL("DROP TABLE IF EXISTS " + DETECTIONS_TABLE_NAME);
+            onCreate(db);
 		}
     	
     }
+    
+    //a database helper to make things easier
+    private DatabaseHelper dbHelper;
     
 	@Override
 	public int delete(Uri arg0, String arg1, String[] arg2) {
@@ -74,14 +100,28 @@ public class LAWNStorage extends ContentProvider {
 
 	@Override
 	public boolean onCreate() {
-		// TODO Auto-generated method stub
-		return false;
+		//initialize the database helper
+		dbHelper = new DatabaseHelper(getContext());
+		return true;
 	}
 
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sortOrder) {
-		// TODO Auto-generated method stub
+		//make the query builder
+		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+		
+		//set the table(s) to query on
+		qb.setTables(DEVICES_TABLE_NAME + " JOIN " + DETECTIONS_TABLE_NAME + 
+				"ON (" + DEVICES_TABLE_NAME + ".uid = " + DETECTIONS_TABLE_NAME + ".uid)");
+		
+		/* TODO: check for what query it is?
+		if(um.match(uri) == SPECIFIC_MESSAGE) {
+			
+		}*/
+		
+		//TODO: make the query
+		
 		return null;
 	}
 
