@@ -3,7 +3,9 @@ package edu.gatech.cs4261.LAWN;
 import java.util.ArrayList;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,19 +29,24 @@ public class BluetoothDiscover extends DeviceDiscover {
     private static final int REQUEST_ENABLE_BT = 3;
     
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
             // When discovery finds a device
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-            //TODO insert into database
-            }
+	            //TODO insert into database
+            	
+            	// Get the BluetoothDevice object from the Intent
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                
+	        }
             else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 Log.v(TAG,"Entered the Finished ");
                 curBluetoothAdapter.startDiscovery();
             }
-        }
+		}
+        
+    };
 
 	/* (non-Javadoc)
 	 * @see edu.gatech.cs4261.LAWN.DeviceDiscover#getProtocolType()
