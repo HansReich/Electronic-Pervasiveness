@@ -21,6 +21,8 @@ public class BluetoothDiscover extends DeviceDiscover {
 	private static String protocolType = "Bluetooth";	
 	/** The current bluetooth adapter. */
 	private BluetoothAdapter curBluetoothAdapter;
+	/** In Meters **/
+	private int accuracy = 10;
 	
 	 // Intent request codes (from the Internet)
  	public static final int REQUEST_CONNECT_DEVICE_SECURE = 1;  
@@ -59,17 +61,7 @@ public class BluetoothDiscover extends DeviceDiscover {
 		}
          
     };
-    
-    
-	@Override
-	public String getProtocolType() {
-		return protocolType;
-	}
-	
-	@Override
-	public void setProtocolType(String protocolType) {
-		this.protocolType = protocolType;		
-	}
+
 
 	@Override
 	public boolean isServiceAvailable() {	
@@ -127,7 +119,23 @@ public class BluetoothDiscover extends DeviceDiscover {
 		return worked;
 	}
 
+	public void setAccuracy(int accuracy) {
+		this.accuracy = accuracy;
+	}
 
+	public int getAccuracy() {
+		return accuracy;
+	}    
+    
+	@Override
+	public String getProtocolType() {
+		return protocolType;
+	}
+	
+	@Override
+	public void setProtocolType(String protocolType) {
+		this.protocolType = protocolType;		
+	}
 	
 
 }
