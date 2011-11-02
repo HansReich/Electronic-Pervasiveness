@@ -6,6 +6,7 @@ import edu.gatech.cs4261.LAWN.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 
 public class Preferences extends CustomActivity {
 	/* constants*/
@@ -16,12 +17,17 @@ public class Preferences extends CustomActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.d(TAG, "before set prefs layout");
         setContentView(R.layout.prefs);
+        
+        Log.d(TAG, "before set button listeners");
         
         /* set up the button listeners*/
         /* enable options*/
-		Button btnScan = (Button)findViewById(R.id.btnScan);
-		btnScan.setOnClickListener(OptionCheckListener);
+		CheckBox OptionCheck = (CheckBox)findViewById(R.id.OptionCheck);
+		OptionCheck.setOnClickListener(OptionCheckListener);
+		
+		Log.d(TAG, "end of onCreate");
 	}
 	
 	/* button listeners/actions */

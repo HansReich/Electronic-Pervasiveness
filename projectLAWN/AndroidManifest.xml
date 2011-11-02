@@ -44,6 +44,9 @@
         
          <service android:name=".DeviceDiscover" />
          <service android:name=".BluetoothDiscover" />
+         
+         <provider android:name=".LAWNStorage"
+             android:authorities="edu.gatech.cs4261.LAWN.LAWNStorage" />
     </application>
 
 </manifest>

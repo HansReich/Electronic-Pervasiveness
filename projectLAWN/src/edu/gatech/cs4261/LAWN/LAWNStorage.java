@@ -124,13 +124,21 @@ public class LAWNStorage extends ContentProvider {
 			throw new IllegalArgumentException("No Protocol given");
 		}
 		if(values.containsKey("accuracy") == false) {
-			values.put("accuracy", 0);
+			values.put("accuracy", 5000);
 		}
 		if(values.containsKey("latitude") == false) {
 			values.put("latitude", 33.7782987);
+			values.remove("longitude");
+			values.put("longitude", -84.3988862);
+			values.remove("accuracy");
+			values.put("accuracy", 5000);
 		}
 		if(values.containsKey("longitude") == false) {
 			values.put("longitude", -84.3988862);
+			values.remove("latitude");
+			values.put("latitude", 33.7782987);
+			values.remove("accuracy");
+			values.put("accuracy", 5000);
 		}
 		if(values.containsKey("weight") == false) {
 			values.put("weight", 1);
@@ -182,12 +190,24 @@ public class LAWNStorage extends ContentProvider {
 		ContentValues values = new ContentValues();
 		
 		//add the values to the values class
-		values.put("mac_addr", mac);
-		values.put("protocol", protocol);
-		values.put("accuracy", accuracy);
-		values.put("latitude", lat);
-		values.put("longitude", lon);
-		values.put("weight", weight);
+		if(mac != null) {
+			values.put("mac_addr", mac);
+		}
+		if(protocol != null) {
+			values.put("protocol", protocol);
+		}
+		if(accuracy > 0) {
+			values.put("accuracy", accuracy);
+		}
+		if(lat > 0) {
+			values.put("latitude", lat);
+		}
+		if(lon > 0) {
+			values.put("longitude", lon);
+		}
+		if(weight >= 0) {
+			values.put("weight", weight);
+		}
 		
 		//call the internal insert method
 		Uri ret = insert(CONTENT_URI, values);
