@@ -10,11 +10,11 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.util.Log;
+import edu.gatech.cs4261.LAWN.Log;
 
 public class LAWNStorage extends ContentProvider {
 	/* constants*/
-	private static final String TAG = "Project LAWN Storage";
+	private static final String TAG = "LAWNStorage";
 	private static final String DATABASE_NAME = "LAWNStorage.db";
     private static final int DATABASE_VERSION = 1;
     private static final String DEVICES_TABLE_NAME = "devices";
@@ -30,12 +30,15 @@ public class LAWNStorage extends ContentProvider {
     public static final Uri CONTENT_URI_DETECTIONS = 
     		Uri.parse("content://" + AUTHORITY + "/" + DETECTIONS_TABLE_NAME);
     
+    //define the match constants
+    private static final int DEFAULT = 0;
+    
     //set up the special constants
     static {
     	um = new UriMatcher(UriMatcher.NO_MATCH);
     	
     	//set up query matches
-    	//um.addURI(AUTHORITY, "devices", DEVICES);
+    	um.addURI(AUTHORITY, "", DEFAULT);
     }
 
     /* TODO: this class helps open, create, and upgrade the database file*/
@@ -93,8 +96,60 @@ public class LAWNStorage extends ContentProvider {
 	}
 
 	@Override
-	public Uri insert(Uri uri, ContentValues values) {
-		// TODO Auto-generated method stub
+	public Uri insert(Uri uri, ContentValues initValues) {
+		// TODO EVERYTHING
+		/* validate the uri*/
+		if(um.match(uri) != DEFAULT) {
+			throw new IllegalArgumentException("Unknown URI " + uri);
+		}
+		
+		/* make sure the content values aren't null*/
+		ContentValues values;
+		if(initValues != null) {
+			values = new ContentValues(initValues);
+		} else {
+			values = new ContentValues();
+		}
+		
+		/* make sure all the values are there*/
+		if(values.containsKey("mac_addr") == false) {
+			throw new IllegalArgumentException("No MAC Address given");
+		}
+		if(values.containsKey("protocol_found") == false) {
+			throw new IllegalArgumentException("No Protocol given");
+		}
+		if(values.containsKey("accuracy") == false) {
+			values.put("accuracy", 0);
+		}
+		if(values.containsKey("latitude") == false) {
+			values.put("latitude", 33.7782987);
+		}
+		if(values.containsKey("longitude") == false) {
+			values.put("longitude", -84.3988862);
+		}
+		if(values.containsKey("weight") == false) {
+			values.put("weight", 1);
+		}
+		
+		//TODO: split the values into the ones for devices and detections
+		ContentValues detValues;
+		ContentValues devValues;
+		
+		//get the database
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		
+		/* TODO: check if a matching device is already in the database and
+		 * insert the device if it isn't*/
+		
+		//TODO: insert the detection into the database
+		long detRowId = db.insert(DETECTIONS_TABLE_NAME, null, detValues);
+		
+		return null;
+	}
+	
+	/*TODO: make the custom outside facing insert for Reid*/
+	public Uri insert(String mac, String protocol, int accuracy, 
+			double lat, double lon, int weight) {
 		return null;
 	}
 
