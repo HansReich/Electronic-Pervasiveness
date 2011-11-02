@@ -178,6 +178,4 @@ public class BluetoothDiscover extends DeviceDiscover {
 	public int getWeight() {
 		return weight;
 	}
-	
-
 }
