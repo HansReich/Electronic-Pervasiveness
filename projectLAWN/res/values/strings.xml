@@ -3,8 +3,8 @@
 
     <string name="hello">Hello World, ProjectLAWNActivity!</string>
     <string name="app_name">Project LAWN</string>
-    <string name="all_time">All Time:\ </string>
-    <string name="today">Today:\ </string>
+    <string name="all_time">All Time: </string>
+    <string name="today">Today: </string>
     <string name="history_title">Historical Data</string>
     <string name="prefs_title">Preferences</string>
 
