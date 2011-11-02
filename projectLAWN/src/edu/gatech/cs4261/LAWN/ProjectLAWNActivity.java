@@ -1,5 +1,6 @@
 package edu.gatech.cs4261.LAWN;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -74,4 +75,5 @@ public class ProjectLAWNActivity extends CustomActivity {
 			ctx.startActivity(i);
 		}
     };
+    
 }
