@@ -39,6 +39,9 @@
                 
             </intent-filter>
         </activity>
+        
+         <service android:name=".DeviceDiscover" />
+         <service android:name=".BluetoothDiscover" />
     </application>
 
 </manifest>

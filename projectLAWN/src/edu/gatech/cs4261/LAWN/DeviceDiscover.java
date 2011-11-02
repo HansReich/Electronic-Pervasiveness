@@ -1,8 +1,10 @@
 package edu.gatech.cs4261.LAWN;
 
-import android.app.Activity;
 
-public abstract class DeviceDiscover extends Activity {
+import android.app.IntentService;
+
+public abstract class DeviceDiscover {
+
 	private String protocolType;
 	
 	public abstract boolean isServiceAvailable();
