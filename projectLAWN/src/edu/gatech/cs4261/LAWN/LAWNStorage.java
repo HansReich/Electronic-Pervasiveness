@@ -1,15 +1,21 @@
 package edu.gatech.cs4261.LAWN;
 
+import java.util.Calendar;
+import java.util.TimeZone;
+
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.text.format.DateFormat;
 import edu.gatech.cs4261.LAWN.Log;
 
 public class LAWNStorage extends ContentProvider {
@@ -41,7 +47,7 @@ public class LAWNStorage extends ContentProvider {
     	um.addURI(AUTHORITY, "", DEFAULT);
     }
 
-    /* TODO: this class helps open, create, and upgrade the database file*/
+    /* this class helps open, create, and upgrade the database file*/
     private static class DatabaseHelper extends SQLiteOpenHelper {
     	/* constructor*/
 		public DatabaseHelper(Context context) {
@@ -97,7 +103,6 @@ public class LAWNStorage extends ContentProvider {
 
 	@Override
 	public Uri insert(Uri uri, ContentValues initValues) {
-		// TODO EVERYTHING
 		/* validate the uri*/
 		if(um.match(uri) != DEFAULT) {
 			throw new IllegalArgumentException("Unknown URI " + uri);
@@ -131,26 +136,63 @@ public class LAWNStorage extends ContentProvider {
 			values.put("weight", 1);
 		}
 		
-		//TODO: split the values into the ones for devices and detections
-		ContentValues detValues;
-		ContentValues devValues;
+		//get the current datetime and convert it into the proper format
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+		String now = (String) DateFormat.format("yyyy/MM/dd HH:mm:ss", cal);
 		
 		//get the database
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		
-		/* TODO: check if a matching device is already in the database and
+		//split off the devices table values
+		ContentValues devValues = new ContentValues();
+		devValues.put("mac_addr", values.getAsString("mac_addr"));
+		devValues.put("protocol", values.getAsString("protocol_found"));
+		
+		/* check if a matching device is already in the database and
 		 * insert the device if it isn't*/
+		long devUID = db.insertWithOnConflict(DEVICES_TABLE_NAME, null, devValues, SQLiteDatabase.CONFLICT_IGNORE);
 		
-		//TODO: insert the detection into the database
-		//long detRowId = db.insert(DETECTIONS_TABLE_NAME, null, detValues);
+		//split off the detections table values
+		ContentValues detValues = new ContentValues();
+		detValues.put("accuracy", values.getAsInteger("accuracy"));
+		detValues.put("latitude", values.getAsDouble("latitude"));
+		detValues.put("longitude", values.getAsDouble("longitude"));
+		detValues.put("weight", values.getAsInteger("weight"));
+		detValues.put("time_logged", now);
+		detValues.put("uid", devUID);
 		
-		return null;
+		//insert the detection into the database
+		long detRowId = db.insertWithOnConflict(DETECTIONS_TABLE_NAME, null, detValues, SQLiteDatabase.CONFLICT_FAIL);
+		
+		//make sure insert was successful and return proper uri
+		if(detRowId > 0) {
+			Uri ret = ContentUris.withAppendedId(CONTENT_URI_DETECTIONS, detRowId);
+            getContext().getContentResolver().notifyChange(ret, null);
+            return ret;
+		}
+		
+		//only reaches this if something went wrong
+		throw new SQLException("Failed to insert data into " + uri);
 	}
 	
-	/*TODO: make the custom outside facing insert for Reid*/
+	/*make the custom outside facing insert for Reid*/
 	public Uri insert(String mac, String protocol, int accuracy, 
 			double lat, double lon, int weight) {
-		return null;
+		//create the values class to send to the insert
+		ContentValues values = new ContentValues();
+		
+		//add the values to the values class
+		values.put("mac_addr", mac);
+		values.put("protocol", protocol);
+		values.put("accuracy", accuracy);
+		values.put("latitude", lat);
+		values.put("longitude", lon);
+		values.put("weight", weight);
+		
+		//call the internal insert method
+		Uri ret = insert(CONTENT_URI, values);
+		
+		return ret;
 	}
 
 	@Override
