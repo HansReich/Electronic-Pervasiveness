@@ -3,7 +3,8 @@ package edu.gatech.cs4261.LAWN;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
+
+import  edu.gatech.cs4261.LAWN.Log;
 
 /** This class is Reid's single instance application thing*/
 public class LAWNApp extends Application {

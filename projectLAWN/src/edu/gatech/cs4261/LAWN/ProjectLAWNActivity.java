@@ -3,10 +3,12 @@ package edu.gatech.cs4261.LAWN;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+
+import  edu.gatech.cs4261.LAWN.Log;
+
 
 public class ProjectLAWNActivity extends CustomActivity {
 	/** constants needed*/

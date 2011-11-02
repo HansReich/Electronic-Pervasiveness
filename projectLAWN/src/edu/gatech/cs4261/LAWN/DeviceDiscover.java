@@ -1,7 +1,5 @@
 package edu.gatech.cs4261.LAWN;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 
 public abstract class DeviceDiscover extends Activity {
