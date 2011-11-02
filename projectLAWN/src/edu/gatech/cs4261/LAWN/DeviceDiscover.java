@@ -9,7 +9,7 @@ public abstract class DeviceDiscover {
 	
 	public abstract boolean isServiceAvailable();
 	
-	public abstract boolean scan();
+	public abstract boolean scan(double lat, double lon);
 	
 	public abstract String getProtocolType();
 	

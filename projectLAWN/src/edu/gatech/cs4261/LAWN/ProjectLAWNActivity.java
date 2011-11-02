@@ -48,16 +48,12 @@ public class ProjectLAWNActivity extends CustomActivity {
 		public void onClick(View v) {
 			Log.d(TAG, "Scan clicked");
 			Location loc = getLocation();
-			//getDiscover().scan();
 			if(loc != null) {
-				String Text = "My current location is: " + 
-		    				"Latitude = " + loc.getLatitude() +
-		    				"Longitud = " + loc.getLongitude();
-		     
-				Log.v(TAG, Text);
+				getDiscover().scan(loc.getLatitude(),loc.getLongitude());
 			} else {
 				Log.d(TAG, "loc returned null which means the provider is " +
 						"currently disabled");
+				getDiscover().scan(0,0);
 			}
 		}
 

@@ -22,7 +22,11 @@ public class BluetoothDiscover extends DeviceDiscover {
 	/** The current bluetooth adapter. */
 	private BluetoothAdapter curBluetoothAdapter;
 	/** In Meters **/
-	private int accuracy = 10;
+	private int accuracy = 10;	
+	private double lattitude;
+	private double longitude; 
+	private int weight = 1;
+	
 	
 	 // Intent request codes (from the Internet)
  	public static final int REQUEST_CONNECT_DEVICE_SECURE = 1;  
@@ -53,6 +57,11 @@ public class BluetoothDiscover extends DeviceDiscover {
             	// Get the BluetoothDevice object from the Intent
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 Log.v(TAG,"Device address: " + device.getAddress());
+                Log.v(TAG, "My current location is: " + 
+	    				"Latitude = " + getLattitude() +
+	    				"Longitud = " + getLongitude());
+                Log.v(TAG, "Accuracy: " + getAccuracy());
+                
 	        }
             else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 Log.v(TAG,"Entered the Finished ");
@@ -105,15 +114,18 @@ public class BluetoothDiscover extends DeviceDiscover {
 	}
 	
 	@Override
-	public boolean scan() {
-		if(Common.DEBUG) Log.v(TAG, "scan called");		
+	public boolean scan(double lat, double lon) {
+		if(Common.DEBUG) Log.v(TAG, "scan called");
+		setLattitude(lat);
+		setLongitude(lon);
 		boolean worked = false;
 		if(checkForBluetoothAdapter()){
 			//Since we dont know who might have called the bluetooth on the phone we
 			//must stop all current actions using the adapter
 			curBluetoothAdapter.cancelDiscovery();
 			//This is an asyncronous call and will return instantly  
-			worked = curBluetoothAdapter.startDiscovery();	
+			worked = curBluetoothAdapter.startDiscovery();
+			Log.v(TAG, "found bluetooth device");
 		}	
 		
 		return worked;
@@ -135,6 +147,36 @@ public class BluetoothDiscover extends DeviceDiscover {
 	@Override
 	public void setProtocolType(String protocolType) {
 		this.protocolType = protocolType;		
+	}
+
+
+	public void setLattitude(double lattitude) {
+		this.lattitude = lattitude;
+	}
+
+
+	public double getLattitude() {
+		return lattitude;
+	}
+
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
+
+
+	public int getWeight() {
+		return weight;
 	}
 	
 
