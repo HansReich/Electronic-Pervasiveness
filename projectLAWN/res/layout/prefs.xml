@@ -19,7 +19,7 @@
         android:onClick="onOptionClicked" 
         android:layout_width="match_parent" 
         android:layout_marginLeft="5dp"  
-        android:layout_height="wrap_content">
-    </CheckBox>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title" />
 
 </RelativeLayout>
