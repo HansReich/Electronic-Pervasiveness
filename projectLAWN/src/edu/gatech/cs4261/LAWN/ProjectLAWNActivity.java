@@ -47,13 +47,26 @@ public class ProjectLAWNActivity extends CustomActivity {
     private OnClickListener btnScanListener = new OnClickListener() {
 		public void onClick(View v) {
 			Log.d(TAG, "Scan clicked");
-			Location loc = mlocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-			getDiscover().scan();
-		    String Text = "My current location is: " + 
+			Location loc = getLocation();
+			//getDiscover().scan();
+			if(loc != null) {
+				String Text = "My current location is: " + 
 		    				"Latitude = " + loc.getLatitude() +
 		    				"Longitud = " + loc.getLongitude();
 		     
-		    Log.v(TAG, Text);
+				Log.v(TAG, Text);
+			} else {
+				Log.d(TAG, "loc returned null which means the provider is " +
+						"currently disabled");
+			}
+		}
+
+		private Location getLocation() {
+			Location loc = mlocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			if(loc == null) {
+				loc = mlocManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+			}
+			return loc;
 		}
     };
     
