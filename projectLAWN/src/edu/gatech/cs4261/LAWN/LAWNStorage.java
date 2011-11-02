@@ -142,7 +142,7 @@ public class LAWNStorage extends ContentProvider {
 		 * insert the device if it isn't*/
 		
 		//TODO: insert the detection into the database
-		long detRowId = db.insert(DETECTIONS_TABLE_NAME, null, detValues);
+		//long detRowId = db.insert(DETECTIONS_TABLE_NAME, null, detValues);
 		
 		return null;
 	}
