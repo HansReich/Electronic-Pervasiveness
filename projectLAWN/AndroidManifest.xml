@@ -11,6 +11,7 @@
     <uses-sdk android:minSdkVersion="8" />
 
     <application
+        android:name=".LAWNApp"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <activity

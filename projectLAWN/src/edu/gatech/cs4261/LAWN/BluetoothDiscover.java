@@ -3,6 +3,7 @@ package edu.gatech.cs4261.LAWN;
 import java.util.ArrayList;
 
 import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,21 @@ public class BluetoothDiscover extends DeviceDiscover {
  	private static final int REQUEST_CONNECT_DEVICE_SECURE = 1;  
     private static final int REQUEST_CONNECT_DEVICE_INSECURE = 2; 
     private static final int REQUEST_ENABLE_BT = 3;
+    
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            // When discovery finds a device
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+            //TODO insert into database
+            }
+            else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                Log.v(TAG,"Entered the Finished ");
+                curBluetoothAdapter.startDiscovery();
+            }
+        }
 
 	/* (non-Javadoc)
 	 * @see edu.gatech.cs4261.LAWN.DeviceDiscover#getProtocolType()
@@ -37,7 +53,8 @@ public class BluetoothDiscover extends DeviceDiscover {
 	 * @see edu.gatech.cs4261.LAWN.DeviceDiscover#isServiceAvailable()
 	 */
 	@Override
-	public boolean isServiceAvailable() {		
+	public boolean isServiceAvailable() {	
+		if(Common.DEBUG) Log.v(TAG, "isServiceAvailable");
 		if (checkForBluetoothAdapter()) {
 		    // Device does not support Bluetooth
 			return false;
@@ -57,6 +74,7 @@ public class BluetoothDiscover extends DeviceDiscover {
 	 * Request bluetooth enable.
 	 */
 	public void requestBluetoothEnable(){
+		if(Common.DEBUG) Log.v(TAG, "requestBluetoothEnable");
 		Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 	    // This should make a pop up asking the user to allow
 	    // bluetooth to be enabled
@@ -82,6 +100,8 @@ public class BluetoothDiscover extends DeviceDiscover {
 	 * @return true, if successful
 	 */
 	private boolean checkForBluetoothAdapter() {
+		if(Common.DEBUG) Log.v(TAG, "checkForBluetoothAdapter");
+		
 		curBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		// If the adapter is null, then Bluetooth is not supported
         if (curBluetoothAdapter == null) {            
@@ -165,7 +185,7 @@ public class BluetoothDiscover extends DeviceDiscover {
      * Ensure discoverable.
      */
     private void ensureDiscoverable() {
-        if(Common.DEBUG) Log.d(TAG, "ensure discoverable");
+        if(Common.DEBUG) Log.d(TAG, "ensureDiscoverable");
         if (curBluetoothAdapter.getScanMode() !=
             BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
@@ -178,10 +198,18 @@ public class BluetoothDiscover extends DeviceDiscover {
 	 * @see edu.gatech.cs4261.LAWN.DeviceDiscover#scan()
 	 */
 	@Override
-	public ArrayList<Device> scan() {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean scan() {
+		if(Common.DEBUG) Log.v(TAG, "scan called");		
+		
+		//Since we dont know who might have called the bluetooth on the phone we
+		//must stop all current actions using the adapter
+		curBluetoothAdapter.cancelDiscovery();
+		//This is an asyncronous call and will return instantly  
+		boolean worked = curBluetoothAdapter.startDiscovery();	
+		
+		return worked;
 	}
+	
 
 	/* (non-Javadoc)
 	 * @see edu.gatech.cs4261.LAWN.DeviceDiscover#setProtocolType(java.lang.String)

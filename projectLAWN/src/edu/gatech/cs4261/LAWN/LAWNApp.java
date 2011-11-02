@@ -3,10 +3,11 @@ package edu.gatech.cs4261.LAWN;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 /** This class is Reid's single instance application thing*/
 public class LAWNApp extends Application {
-	
+	private static String TAG = "LAWNApp";
 	/** The instance of this Application. */
 	private static LAWNApp instance; 
 	
@@ -19,10 +20,12 @@ public class LAWNApp extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		if(Common.DEBUG) Log.v(TAG, "ON CREATE");
+		
 		instance = this;
-
 		preferences = getSharedPreferences(Common.MAIN_PREFERENCES,
-				Context.MODE_PRIVATE);
+				Context.MODE_PRIVATE);		
+		discover = new BluetoothDiscover();
 	}
 	
 	public DeviceDiscover getDiscover() {

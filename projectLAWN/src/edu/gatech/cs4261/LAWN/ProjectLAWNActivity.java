@@ -37,8 +37,7 @@ public class ProjectLAWNActivity extends CustomActivity {
     private OnClickListener btnScanListener = new OnClickListener() {
 		public void onClick(View v) {
 			Log.d(TAG, "Scan clicked");
-			
-			/**TODO: Start scanning*/
+			getDiscover().scan();
 		}
     };
     
