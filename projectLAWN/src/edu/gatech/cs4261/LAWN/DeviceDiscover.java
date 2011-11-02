@@ -1,7 +1,5 @@
 package edu.gatech.cs4261.LAWN;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 
 public abstract class DeviceDiscover extends Activity {
@@ -9,7 +7,7 @@ public abstract class DeviceDiscover extends Activity {
 	
 	public abstract boolean isServiceAvailable();
 	
-	public abstract ArrayList<Device> scan();
+	public abstract boolean scan();
 	
 	public abstract String getProtocolType();
 	
