@@ -36,12 +36,13 @@ public class LAWNStorage extends ContentProvider {
 			
 			// execute the SQL to create the detections table
 			db.execSQL("CREATE TABLE " + DETECTIONS_TABLE_NAME + " ("
-                    + "uid INTEGER FOREIGN KEY,"
+                    + "uid INTEGER,"
                     + "accuracy INTEGER,"
-                    + "latitude DOUBLE,"
-                    + "longitude DOUBLE,"
-                    + "time_logged DATETIME,"
-                    + "weight INTEGER"
+                    + "latitude REAL,"
+                    + "longitude REAL,"
+                    + "time_logged TEXT,"
+                    + "weight INTEGER, "
+                    + "FOREIGN KEY(uid) REFERENCES " + DEVICES_TABLE_NAME + "(uid)"
                     + ");");
 		}
 
