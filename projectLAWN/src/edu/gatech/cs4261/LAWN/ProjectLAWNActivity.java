@@ -1,6 +1,5 @@
 package edu.gatech.cs4261.LAWN;
 
-import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -10,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.Toast;
 
 import  edu.gatech.cs4261.LAWN.Log;
 
@@ -19,6 +17,9 @@ public class ProjectLAWNActivity extends CustomActivity {
 	/** constants needed*/
 	private static final String TAG = "Project LAWN Main";
 	private Context ctx = this;
+	 
+	private LocationManager mlocManager;
+	private LocationListener mlocListener;
 	
     /** Called when the activity is first created. */
     @Override
@@ -46,7 +47,13 @@ public class ProjectLAWNActivity extends CustomActivity {
     private OnClickListener btnScanListener = new OnClickListener() {
 		public void onClick(View v) {
 			Log.d(TAG, "Scan clicked");
+			Location loc = mlocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 			getDiscover().scan();
+		    String Text = "My current location is: " + 
+		    				"Latitude = " + loc.getLatitude() +
+		    				"Longitud = " + loc.getLongitude();
+		     
+		    Log.v(TAG, Text);
 		}
     };
     
@@ -82,15 +89,17 @@ public class ProjectLAWNActivity extends CustomActivity {
 		}
     };
     public void setupLocation(){
+    	Log.v(TAG, "Setting up Location Services");
 		/* Use the LocationManager class to obtain GPS locations */
-		LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-		LocationListener mlocListener = new MyLocationListener();
+    	mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+		mlocListener = new MyLocationListener();
 		mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0,
 															0, mlocListener);
 	}
     
     public class MyLocationListener implements LocationListener {
-	
+    	private static final String TAG = "MyLocationListener";
+    	
 	    @Override
 	    public void onProviderDisabled(String provider) {
 	    	Log.v(TAG, "Gps Disabled"); 
@@ -107,6 +116,7 @@ public class ProjectLAWNActivity extends CustomActivity {
 
 		@Override
 		public void onLocationChanged(Location location) {
+			Log.v(TAG, "LocationChanged");
 			location.getLatitude();	
 			location.getLongitude();	
 		    String Text = "My current location is: " + 
