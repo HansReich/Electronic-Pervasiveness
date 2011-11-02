@@ -12,12 +12,14 @@
         android:text="@string/prefs_title" 
         android:layout_centerHorizontal="true" />
         
-    <CompoundButton
-        android:id="@+id/data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Some Option" 
-        android:layout_below="@id/title"
-        android:checked="true" />
+    <CheckBox
+        android:id="@+id/OptionCheck"
+        android:text="Some Option"
+        android:textSize="12sp"
+        android:onClick="onOptionClicked" 
+        android:layout_width="match_parent" 
+        android:layout_marginLeft="5dp"  
+        android:layout_height="wrap_content">
+    </CheckBox>
 
 </RelativeLayout>

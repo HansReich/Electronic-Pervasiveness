@@ -1,6 +1,5 @@
 package edu.gatech.cs4261.LAWN;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -68,10 +67,10 @@ public class ProjectLAWNActivity extends CustomActivity {
 			
 			/* Send to Preferences screen*/
 			//make the intent to call the new screen
-			//Intent i = new Intent(ProjectLAWNActivity.this, Preferences.class);
+			Intent i = new Intent(ProjectLAWNActivity.this, Preferences.class);
 			
 			//start the new activity
-			//ctx.startActivity(i);
+			ctx.startActivity(i);
 		}
     };
 }
