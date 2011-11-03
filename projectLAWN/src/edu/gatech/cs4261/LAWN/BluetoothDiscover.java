@@ -143,11 +143,6 @@ public class BluetoothDiscover extends DeviceDiscover {
 	public String getProtocolType() {
 		return protocolType;
 	}
-	
-	@Override
-	public void setProtocolType(String protocolType) {
-		this.protocolType = protocolType;		
-	}
 
 
 	public void setLattitude(double lattitude) {

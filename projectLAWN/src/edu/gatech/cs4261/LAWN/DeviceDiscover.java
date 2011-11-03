@@ -13,6 +13,4 @@ public abstract class DeviceDiscover {
 	
 	public abstract String getProtocolType();
 	
-	public abstract void setProtocolType(String protocolType);
-	
 }
