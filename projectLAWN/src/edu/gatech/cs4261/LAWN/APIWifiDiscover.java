@@ -84,7 +84,6 @@ public class APIWifiDiscover extends DeviceDiscover {
         
         HttpEntity entity = response.getEntity();
         page = EntityUtils.toString(entity);        
-        return page;
-        
+        return page;        
     }
 }
