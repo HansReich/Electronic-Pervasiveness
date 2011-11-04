@@ -1,7 +1,6 @@
 package edu.gatech.cs4261.LAWN;
 
 import java.io.IOException;
-import java.net.URI;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -13,7 +12,11 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 
-import android.net.Uri;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 
 public class APIWifiDiscover extends DeviceDiscover {
     private static final String protocolType = "APIWifiDiscover"; 
@@ -35,11 +38,9 @@ public class APIWifiDiscover extends DeviceDiscover {
     }
 
     @Override
-    public boolean scan(double lat, double lon) {
-        String userPage = "Some userpage error";
+    public boolean scan(double lat, double lon, Context ctx) {
         String apPage ="Some ap error";
         try {
-            userPage = getUserData("hbaker3");
             apPage = getAPData("50-348");
         } catch (ClientProtocolException e) {
             // TODO Auto-generated catch block
@@ -48,11 +49,12 @@ public class APIWifiDiscover extends DeviceDiscover {
             // TODO Auto-generated catch block
             Log.e(TAG, e.toString());
         }
-        Log.d(TAG, userPage);
+        findRouterMac(ctx);
+        Log.d(TAG, apPage);
         return false;
     }
     
-    private String getUserData(String username) throws ClientProtocolException, IOException{
+    private HttpEntity getUserData(String username) throws ClientProtocolException, IOException{
         String urlBase = "http://gardener.gatech.edu/whereami/getUserAP.php?User=";
         //TODO escape things somewhere 
         String url = urlBase + username;
@@ -65,7 +67,7 @@ public class APIWifiDiscover extends DeviceDiscover {
         Log.d(TAG, "Status code: " +statusCode);
         HttpEntity entity = response.getEntity();
         page = EntityUtils.toString(entity);        
-        return page;
+        return entity;
         
     }
     
@@ -85,5 +87,17 @@ public class APIWifiDiscover extends DeviceDiscover {
         HttpEntity entity = response.getEntity();
         page = EntityUtils.toString(entity);        
         return page;        
+    }
+    
+    private String findRouterMac(Context ctx){
+        Log.d(TAG, "trying to find mac of connected router");
+        String mac = "";
+        ConnectivityManager myConnManager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo myNetworkInfo = myConnManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        WifiManager myWifiManager = (WifiManager)ctx.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo myWifiInfo = myWifiManager.getConnectionInfo();
+        mac = myWifiInfo.getMacAddress();
+        Log.i(TAG, mac);
+        return mac;
     }
 }
