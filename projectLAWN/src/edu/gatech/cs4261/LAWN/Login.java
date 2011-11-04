@@ -69,8 +69,10 @@ public class Login extends CustomActivity {
 			/* get the data from the input fields*/
 			String username = userField.getText().toString();
 			
+			Log.d(TAG, "username: " + username);
+			
 			/*call the main activity with the username if it's hreichenba3 or hbaker3*/
-			if(username.equals("hreichenba3") || username.equals("hbaker3")) {
+			if(username.trim().equalsIgnoreCase("hreichenba3") || username.trim().equalsIgnoreCase("hbaker3")) {
 				//make the intent to call the new screen
 				Intent KingRaw = new Intent(Login.this, ProjectLAWNActivity.class);
 				
