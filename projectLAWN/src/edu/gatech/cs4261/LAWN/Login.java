@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,7 +24,6 @@ public class Login extends CustomActivity {
 		Button btnLogin = (Button)findViewById(R.id.LogInButton);
 		btnLogin.setOnClickListener(LoginListener);
 		
-		/** TODO: set up something to check for remember user*/
 		//check a boolean in preferences to see if remember was used last time
 		boolean prevSavedLogin;
 		prevSavedLogin = getPreferences().getBoolean("RememberMe", false);
@@ -68,6 +68,14 @@ public class Login extends CustomActivity {
 				SharedPreferences.Editor editor = getPreferences().edit();
 				editor.putString("username", username);
 				editor.commit();
+				
+				//check if remember me was checked
+				final CheckBox checkBox = (CheckBox) findViewById(R.id.RememberMeCheck);
+		        if (checkBox.isChecked()) {
+		            editor.putBoolean("RememberMe", true);
+		        } else {
+		            editor.putBoolean("RememberMe", false);
+		        }
 				
 				//start the new activity
 				Login.this.startActivity(KingRaw);
