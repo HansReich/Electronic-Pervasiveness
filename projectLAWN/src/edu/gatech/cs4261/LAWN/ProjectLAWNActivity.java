@@ -1,10 +1,14 @@
 package edu.gatech.cs4261.LAWN;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,7 +45,20 @@ public class ProjectLAWNActivity extends CustomActivity {
 		btnPref.setOnClickListener(btnPrefListener);
 		
 		setupLocation();
+		/*this.registerReceiver(this.myWifiReceiver,
+                new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));*/
     }
+    
+    /*private BroadcastReceiver myWifiReceiver = new BroadcastReceiver(){
+       @Override
+       public void onReceive(Context arg0, Intent arg1) {
+           // TODO Auto-generated method stub
+           NetworkInfo networkInfo = (NetworkInfo) arg1.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
+           if(networkInfo.getType() == ConnectivityManager.TYPE_WIFI){
+               DisplayWifiState();
+           }
+       }
+    };*/
     
     /** what to do when Scan is clicked */
     private OnClickListener btnScanListener = new OnClickListener() {
@@ -49,11 +66,11 @@ public class ProjectLAWNActivity extends CustomActivity {
 			Log.d(TAG, "Scan clicked");
 			Location loc = getLocation();
 			if(loc != null) {
-				getDiscover().scan(loc.getLatitude(),loc.getLongitude());
+				getDiscover().scan(loc.getLatitude(),loc.getLongitude(),ctx);
 			} else {
 				Log.d(TAG, "loc returned null which means the provider is " +
 						"currently disabled");
-				getDiscover().scan(0,0);
+				getDiscover().scan(0,0,ctx);
 			}
 		}
 

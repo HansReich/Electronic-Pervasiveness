@@ -6,6 +6,8 @@ import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 
 import  edu.gatech.cs4261.LAWN.Log;
 
@@ -44,6 +46,7 @@ public class BluetoothDiscover extends DeviceDiscover {
 		else{
 			if(Common.DEBUG) Log.v(TAG, "device does not have bluetooth");
 		}
+		
     }
     
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -114,7 +117,7 @@ public class BluetoothDiscover extends DeviceDiscover {
 	}
 	
 	@Override
-	public boolean scan(double lat, double lon) {
+	public boolean scan(double lat, double lon, Context ctx) {
 		if(Common.DEBUG) Log.v(TAG, "scan called");
 		setLattitude(lat);
 		setLongitude(lon);
