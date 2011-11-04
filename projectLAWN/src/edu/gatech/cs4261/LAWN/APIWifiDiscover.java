@@ -40,6 +40,7 @@ public class APIWifiDiscover extends DeviceDiscover {
     @Override
     public boolean scan(double lat, double lon, Context ctx) {
         String apPage ="Some ap error";
+        String routerMac = "No Mac Found";
         try {
             apPage = getAPData("50-348");
         } catch (ClientProtocolException e) {
@@ -49,7 +50,7 @@ public class APIWifiDiscover extends DeviceDiscover {
             // TODO Auto-generated catch block
             Log.e(TAG, e.toString());
         }
-        findRouterMac(ctx);
+        routerMac = findRouterMac(ctx);
         Log.d(TAG, apPage);
         return false;
     }
@@ -96,7 +97,7 @@ public class APIWifiDiscover extends DeviceDiscover {
         NetworkInfo myNetworkInfo = myConnManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         WifiManager myWifiManager = (WifiManager)ctx.getSystemService(Context.WIFI_SERVICE);
         WifiInfo myWifiInfo = myWifiManager.getConnectionInfo();
-        mac = myWifiInfo.getMacAddress();
+        mac = myWifiInfo.getBSSID();
         Log.i(TAG, mac);
         return mac;
     }
