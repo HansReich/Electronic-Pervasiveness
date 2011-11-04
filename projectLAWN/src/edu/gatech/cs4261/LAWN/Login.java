@@ -1,6 +1,7 @@
 package edu.gatech.cs4261.LAWN;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,10 +25,27 @@ public class Login extends CustomActivity {
 		
 		/** TODO: set up something to check for remember user*/
 		//check a boolean in preferences to see if remember was used last time
+		boolean prevSavedLogin;
+		prevSavedLogin = getPreferences().getBoolean("RememberMe", false);
 		
-		//if boolean was false wipe the username in preferences and wait for the new one
-		
-		//if boolean was true start the main activity
+		/* auto login or not based on save preference*/
+		if(prevSavedLogin) {
+			/*start the main activity*/
+			//make the intent to call the new screen
+			Intent KingRaw = new Intent(Login.this, ProjectLAWNActivity.class);
+			
+			//start the new activity
+			Login.this.startActivity(KingRaw);
+			
+			Log.i(TAG, "Successful log in");
+		} else {
+			/* wipe the username in preferences and wait for the new one*/
+		    SharedPreferences.Editor editor = getPreferences().edit();
+		    editor.remove("username");
+		    editor.commit();
+		    
+			Log.v(TAG, "autologin didn't pass");
+		}
 	}
 	
 	/* make the login click listener*/
@@ -46,8 +64,10 @@ public class Login extends CustomActivity {
 				//make the intent to call the new screen
 				Intent KingRaw = new Intent(Login.this, ProjectLAWNActivity.class);
 				
-				//add the participant id to the intent
-				KingRaw.putExtra("username", username);
+				//save the username to preferences
+				SharedPreferences.Editor editor = getPreferences().edit();
+				editor.putString("username", username);
+				editor.commit();
 				
 				//start the new activity
 				Login.this.startActivity(KingRaw);
