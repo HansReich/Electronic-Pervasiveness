@@ -27,9 +27,9 @@ public class LAWNApp extends Application {
 		preferences = getSharedPreferences(Common.MAIN_PREFERENCES,
 				Context.MODE_PRIVATE);	
 		
-		discover = new BluetoothDiscover();
+		discover = new APIWifiDiscover();
 	}
-	
+	    
 	public DeviceDiscover getDiscover() {
 		return discover;
 	}
