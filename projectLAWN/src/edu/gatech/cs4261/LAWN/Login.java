@@ -47,14 +47,14 @@ public class Login extends CustomActivity {
 			//start the new activity
 			Login.this.startActivity(KingRaw);
 			
-			Log.v(TAG, "Successful log in");
+			Log.v(TAG, "Successful autolog in");
 		} else {
 			/* wipe the username in preferences and wait for the new one*/
 		    SharedPreferences.Editor editor = getPreferences().edit();
 		    editor.remove("username");
 		    editor.commit();
 		    
-			Log.v(TAG, "autologin didn't pass");
+			Log.v(TAG, "autologin didn't pass: " + prevSavedLogin);
 		}
 	}
 	
@@ -77,7 +77,6 @@ public class Login extends CustomActivity {
 				//save the username to preferences
 				SharedPreferences.Editor editor = getPreferences().edit();
 				editor.putString("username", username);
-				editor.commit();
 				
 				//check if remember me was checked
 		        if (cbox.isChecked()) {
@@ -85,6 +84,9 @@ public class Login extends CustomActivity {
 		        } else {
 		            editor.putBoolean("RememberMe", false);
 		        }
+		        
+		        //commit the changes to the preferences
+		        editor.commit();
 				
 				//start the new activity
 				Login.this.startActivity(KingRaw);
