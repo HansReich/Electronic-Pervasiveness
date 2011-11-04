@@ -92,12 +92,14 @@ public class LAWNStorage extends ContentProvider {
 	@Override
 	public int delete(Uri arg0, String arg1, String[] arg2) {
 		// TODO Auto-generated method stub
+		Log.e(TAG, "THIS METHOD SHOULD NEVER BE CALLED");
 		return 0;
 	}
 
 	@Override
 	public String getType(Uri uri) {
 		// TODO Auto-generated method stub
+		Log.e(TAG, "THIS METHOD SHOULD NEVER BE CALLED");
 		return null;
 	}
 
@@ -238,6 +240,7 @@ public class LAWNStorage extends ContentProvider {
 		}*/
 		
 		//TODO: make the query
+		Log.e(TAG, "THIS METHOD SHOULD NEVER BE CALLED");
 		
 		return null;
 	}
@@ -246,6 +249,7 @@ public class LAWNStorage extends ContentProvider {
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
 		// TODO Auto-generated method stub
+		Log.e(TAG, "THIS METHOD SHOULD NEVER BE CALLED");
 		return 0;
 	}
 

@@ -109,21 +109,21 @@ public class ProjectLAWNActivity extends CustomActivity {
     public class MyLocationListener implements LocationListener {
     	private static final String TAG = "MyLocationListener";
     	
-	    @Override
+	    
 	    public void onProviderDisabled(String provider) {
 	    	Log.v(TAG, "Gps Disabled"); 
 	    }
 	    
-	    @Override
+	    
 	    public void onProviderEnabled(String provider) {
 	    	Log.v(TAG,"Gps Enabled"); 
 	    }
 	    
-	    @Override
+	    
 	    public void onStatusChanged(String provider, int status, Bundle extras) {
 	    }
 
-		@Override
+		
 		public void onLocationChanged(Location location) {
 			Log.v(TAG, "LocationChanged");
 			location.getLatitude();	
