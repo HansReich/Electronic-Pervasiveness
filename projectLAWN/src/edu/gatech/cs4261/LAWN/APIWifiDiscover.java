@@ -36,9 +36,11 @@ public class APIWifiDiscover extends DeviceDiscover {
 
     @Override
     public boolean scan(double lat, double lon) {
-        String page = "Some error";
+        String userPage = "Some userpage error";
+        String apPage ="Some ap error";
         try {
-            page = getUserData("hbaker3");
+            userPage = getUserData("hbaker3");
+            apPage = getAPData("50-348");
         } catch (ClientProtocolException e) {
             // TODO Auto-generated catch block
             Log.e(TAG, e.toString());
@@ -46,7 +48,7 @@ public class APIWifiDiscover extends DeviceDiscover {
             // TODO Auto-generated catch block
             Log.e(TAG, e.toString());
         }
-        Log.d(TAG, page);
+        Log.d(TAG, userPage);
         return false;
     }
     
@@ -59,9 +61,27 @@ public class APIWifiDiscover extends DeviceDiscover {
         HttpGet httpGet = new HttpGet(url);
         String page = "Page was not created check for an error";
         HttpResponse response = httpClient.execute(httpGet, httpContext);
-        Log.d(TAG, page);
         int statusCode = response.getStatusLine().getStatusCode();
         Log.d(TAG, "Status code: " +statusCode);
+        HttpEntity entity = response.getEntity();
+        page = EntityUtils.toString(entity);        
+        return page;
+        
+    }
+    
+    private String getAPData(String apName) throws ClientProtocolException, IOException{
+        String urlBase = "http://gardener.gatech.edu/whereami/getAPStatus.php?APName=";
+        //TODO escape things somewhere 
+        String url = urlBase + apName;
+        String page = "Page was not created check for an error";
+        HttpContext httpContext = new BasicHttpContext();
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpGet httpGet = new HttpGet(url);
+        
+        HttpResponse response = httpClient.execute(httpGet, httpContext);
+        int statusCode = response.getStatusLine().getStatusCode();
+        Log.d(TAG, "Status code: " +statusCode);
+        
         HttpEntity entity = response.getEntity();
         page = EntityUtils.toString(entity);        
         return page;
