@@ -21,10 +21,4 @@ public class APIWifiDiscover extends DeviceDiscover {
 		return false;
 	}
 
-	@Override
-	public void setProtocolType(String protocolType) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
