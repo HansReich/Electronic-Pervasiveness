@@ -3,7 +3,7 @@ package edu.gatech.cs4261.LAWN;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import edu.gatech.cs4261.LAWN.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -14,11 +14,16 @@ import android.widget.Toast;
 public class Login extends CustomActivity {
 	private static final String TAG = "Login";
 	
+	//globals
+	CheckBox cbox;
+	
 	/* what to do when the activity is first made*/
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
+		
+		Log.d(TAG, "inside onCreate of Login");
 		
 		/* set up the button listeners*/
 		Button btnLogin = (Button)findViewById(R.id.LogInButton);
@@ -27,6 +32,11 @@ public class Login extends CustomActivity {
 		//check a boolean in preferences to see if remember was used last time
 		boolean prevSavedLogin;
 		prevSavedLogin = getPreferences().getBoolean("RememberMe", false);
+		
+		//initialize the checkbox
+		cbox = (CheckBox) findViewById(R.id.RememberMeCheck);
+		
+		Log.d(TAG, "after find checkbox");
 		
 		/* auto login or not based on save preference*/
 		if(prevSavedLogin) {
@@ -37,7 +47,7 @@ public class Login extends CustomActivity {
 			//start the new activity
 			Login.this.startActivity(KingRaw);
 			
-			Log.i(TAG, "Successful log in");
+			Log.v(TAG, "Successful log in");
 		} else {
 			/* wipe the username in preferences and wait for the new one*/
 		    SharedPreferences.Editor editor = getPreferences().edit();
@@ -70,8 +80,7 @@ public class Login extends CustomActivity {
 				editor.commit();
 				
 				//check if remember me was checked
-				final CheckBox checkBox = (CheckBox) findViewById(R.id.RememberMeCheck);
-		        if (checkBox.isChecked()) {
+		        if (cbox.isChecked()) {
 		            editor.putBoolean("RememberMe", true);
 		        } else {
 		            editor.putBoolean("RememberMe", false);
