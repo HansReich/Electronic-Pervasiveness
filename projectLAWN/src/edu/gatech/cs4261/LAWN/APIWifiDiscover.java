@@ -72,7 +72,14 @@ public class APIWifiDiscover extends DeviceDiscover {
         	//get the data from the api about which aps a user is connected to
         	HttpEntity apiReturn = getUserData(username);
         	String rmac = findRouterMac(ctx);
-        	String apName = findAPNamefromXML(rmac, apiReturn);
+        	//a catch for debugging if mac returns as null
+        	String apName;
+        	if(rmac.equals(null)) {
+        		rmac = "78:D6:F0:92:49:FE";
+        		apName = "175-123";
+        	} else {
+        		apName = findAPNamefromXML(rmac, apiReturn);
+        	}
         	
         	Log.d(TAG, "ap name: " + apName);
         	
@@ -285,7 +292,7 @@ public class APIWifiDiscover extends DeviceDiscover {
         WifiManager myWifiManager = (WifiManager)ctx.getSystemService(Context.WIFI_SERVICE);
         WifiInfo myWifiInfo = myWifiManager.getConnectionInfo();
         mac = myWifiInfo.getBSSID();
-        Log.i(TAG, mac);
+        Log.i(TAG, "mac = " + mac);
         return mac;
     }
 }

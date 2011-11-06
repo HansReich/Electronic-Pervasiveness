@@ -150,6 +150,8 @@ public class LAWNStorage extends ContentProvider {
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		String now = (String) DateFormat.format("yyyy/MM/dd HH:mm:ss", cal);
 		
+		Log.d(TAG, "NOW: " + now);
+		
 		//get the database
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		
