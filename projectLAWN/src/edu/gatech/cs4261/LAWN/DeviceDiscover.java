@@ -1,18 +1,17 @@
 package edu.gatech.cs4261.LAWN;
 
-import java.util.ArrayList;
 
-import android.app.Activity;
+import android.app.IntentService;
+import android.content.Context;
 
-public abstract class DeviceDiscover extends Activity {
+public abstract class DeviceDiscover {
+
 	private String protocolType;
 	
 	public abstract boolean isServiceAvailable();
 	
-	public abstract ArrayList<Device> scan();
+	public abstract boolean scan(double lat, double lon, Context ctx);
 	
 	public abstract String getProtocolType();
-	
-	public abstract void setProtocolType(String protocolType);
 	
 }
