@@ -64,7 +64,11 @@ public class ProjectLAWNActivity extends CustomActivity {
     private OnClickListener btnScanListener = new OnClickListener() {
 		public void onClick(View v) {
 			Log.d(TAG, "Scan clicked");
+			
+			//get the current location of the device
 			Location loc = getLocation();
+			
+			
 			if(loc != null) {
 				getDiscover().scan(loc.getLatitude(),loc.getLongitude(),ctx);
 			} else {
@@ -74,6 +78,7 @@ public class ProjectLAWNActivity extends CustomActivity {
 			}
 		}
 
+		//finds the last known location of the device
 		private Location getLocation() {
 			Location loc = mlocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 			if(loc == null) {

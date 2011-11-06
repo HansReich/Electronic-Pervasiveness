@@ -20,24 +20,25 @@
         android:layout_marginTop="10dp" 
         android:layout_below="@id/title" />
         
-    <CheckBox
-        android:id="@+id/WifiCheck"
-        android:text="Wifi"
-        android:textSize="12sp"
-        android:layout_width="match_parent" 
-        android:layout_marginLeft="5dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ScanLabel" />
-        
-    <CheckBox
-		android:id="@+id/BTCheck"
-		android:text="Bluetooth"
-		android:textSize="12sp"
-		android:layout_width="match_parent" 
-		android:layout_marginLeft="5dp" 
-		android:layout_height="wrap_content"
-		android:layout_below="@id/WifiCheck">
-	</CheckBox>
+    <RadioGroup
+    	android:id="@+id/RadioGroup"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="vertical"
+    	android:layout_below="@id/ScanLabel">
+    	
+    	<RadioButton
+    		android:id="@+id/WifiRadio"
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:text="Wifi" />
+    		
+    	<RadioButton
+    		android:id="@+id/BTRadio"
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:text="Bluetooth" />
+    </RadioGroup>
 	
 	<Button
 		android:id="@+id/SavePrefs"
@@ -47,6 +48,6 @@
 		android:layout_height="wrap_content"
 		android:layout_centerHorizontal="true"
 		android:layout_marginTop="20dp"
-		android:layout_below="@id/BTCheck"  />
+		android:layout_below="@id/RadioGroup"  />
 
 </RelativeLayout>

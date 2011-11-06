@@ -8,14 +8,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.RadioButton;
 
 public class Preferences extends CustomActivity {
 	/* constants*/
 	private static final String TAG = "Preferences";
 	
 	/* buttons*/
-	CheckBox WifiCheck;
-	CheckBox BTCheck;
+	RadioButton WifiRadio;
+	RadioButton BTRadio;
 	
 	/*called when the class is first made*/
 	@Override
@@ -25,21 +26,21 @@ public class Preferences extends CustomActivity {
         setContentView(R.layout.prefs);
         
         /* enable options*/
-		WifiCheck = (CheckBox)findViewById(R.id.WifiCheck);
-		BTCheck = (CheckBox)findViewById(R.id.BTCheck);
+		WifiRadio = (RadioButton)findViewById(R.id.WifiRadio);
+		BTRadio = (RadioButton)findViewById(R.id.BTRadio);
 		
-		//check booleans in preferences to see what state should be on startup
-		boolean wifi, bt;
-		wifi = getPreferences().getBoolean("WifiState", false);
-		bt = getPreferences().getBoolean("BTState", false);
+		//check what scan was set to previously
+		String scanSetting = getPreferences().getString("ScanSetting", "Wifi");
 		
 		Log.d(TAG, "after preferences check");
-		Log.d(TAG, "BTState: " + bt);
-        Log.d(TAG, "WifiState: " + wifi);
+		Log.d(TAG, "scan is set to " + scanSetting);
 		
-		//change the checkboxes to match the saved state
-		WifiCheck.setChecked(wifi);
-		BTCheck.setChecked(bt);
+		//change the radiobuttons to match the saved state
+		if(scanSetting.equals("Wifi")) {
+			WifiRadio.setChecked(true);
+		} else {
+			BTRadio.setChecked(true);
+		}
 		
 		//set up save button listener
 		Button btnSave = (Button)findViewById(R.id.SavePrefs);
@@ -57,25 +58,17 @@ public class Preferences extends CustomActivity {
 			//set up the preferences editor
 			SharedPreferences.Editor editor = getPreferences().edit();
 			
-			//check if wifi was checked
-	        if (WifiCheck.isChecked()) {
-	            editor.putBoolean("WifiState", true);
+			//check which setting is checked
+	        if (WifiRadio.isChecked()) {
+	            editor.putString("ScanSetting", "Wifi");
 	        } else {
-	            editor.putBoolean("WifiState", false);
-	        }
-	        
-	        //check if bluetooth was checked
-	        if (BTCheck.isChecked()) {
-	            editor.putBoolean("BTState", true);
-	        } else {
-	            editor.putBoolean("BTState", false);
+	            editor.putString("ScanSetting", "Bluetooth");
 	        }
 	        
 	        //commit the changes to preferences
 	        editor.commit();
 	        
-	        Log.d(TAG, "BTState: " + getPreferences().getBoolean("BTState", false));
-	        Log.d(TAG, "WifiState: " + getPreferences().getBoolean("WifiState", false));
+	        Log.d(TAG, "Scan Setting is " + getPreferences().getString("ScanSetting", "Wifi"));
 		}
     };
 }
