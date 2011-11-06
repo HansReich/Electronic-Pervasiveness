@@ -47,14 +47,14 @@ public class Login extends CustomActivity {
 			//start the new activity
 			Login.this.startActivity(KingRaw);
 			
-			Log.v(TAG, "Successful autolog in");
+			Log.i(TAG, "Successful autolog in");
 		} else {
 			/* wipe the username in preferences and wait for the new one*/
 		    SharedPreferences.Editor editor = getPreferences().edit();
 		    editor.remove("username");
 		    editor.commit();
 		    
-			Log.v(TAG, "autologin didn't pass: " + prevSavedLogin);
+			Log.i(TAG, "autologin didn't pass");
 		}
 	}
 	
