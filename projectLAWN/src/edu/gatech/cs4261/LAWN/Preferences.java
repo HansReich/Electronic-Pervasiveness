@@ -34,6 +34,8 @@ public class Preferences extends CustomActivity {
 		bt = getPreferences().getBoolean("BTState", false);
 		
 		Log.d(TAG, "after preferences check");
+		Log.d(TAG, "BTState: " + bt);
+        Log.d(TAG, "WifiState: " + wifi);
 		
 		//change the checkboxes to match the saved state
 		WifiCheck.setChecked(wifi);
@@ -63,7 +65,7 @@ public class Preferences extends CustomActivity {
 	        }
 	        
 	        //check if bluetooth was checked
-	        if (WifiCheck.isChecked()) {
+	        if (BTCheck.isChecked()) {
 	            editor.putBoolean("BTState", true);
 	        } else {
 	            editor.putBoolean("BTState", false);
