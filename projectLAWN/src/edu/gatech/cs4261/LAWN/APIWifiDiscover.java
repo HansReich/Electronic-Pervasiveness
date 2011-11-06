@@ -22,6 +22,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -57,7 +59,6 @@ public class APIWifiDiscover extends DeviceDiscover {
      */
     public boolean scan(double lat, double lon, Context ctx) {
         String apPage ="Some ap error";
-        String routerMac = "No Mac Found";
         try {
         	//get the username that's logged in
         	String username = ((CustomActivity) ctx).getPreferences().getString("username", null);
@@ -75,8 +76,36 @@ public class APIWifiDiscover extends DeviceDiscover {
         	
         	Log.d(TAG, "ap name: " + apName);
         	
-        	//get the data about the ap
-            apPage = getAPData(apName);
+        	//get the HttpEntity from the api call for ap data
+        	apiReturn = getAPData(apName);
+        	
+        	//parse the xml from the api call into what we need
+        	int currentImpressions = findImpressionsFromXML(apiReturn);
+        	
+        	Log.d(TAG, "current impressions: " + currentImpressions);
+        	
+        	//get a content resolver to deal with the database
+        	ContentResolver cr = ctx.getContentResolver();
+        	
+        	//create the values class to send to the insert
+    		ContentValues values = new ContentValues();
+    		values.put("mac_addr", rmac);
+    		values.put("protocol", "api_wifi");
+    		//TODO: figure out and insert accuracy
+    		if(lat > 0) {
+    			values.put("latitude", lat);
+    		}
+    		if(lon > 0) {
+    			values.put("longitude", lon);
+    		}
+    		values.put("weight", currentImpressions);
+    		
+    		//call the insert method
+    		Uri ret = cr.insert(LAWNStorage.CONTENT_URI, values);
+    		
+    		Log.d(TAG, "data inserted at: " + ret.toString());
+    		
+    		return true;
         } catch (ClientProtocolException e) {
             Log.e(TAG, e.toString());
         } catch (IOException e) {
@@ -94,18 +123,28 @@ public class APIWifiDiscover extends DeviceDiscover {
      * @throws IOException
      */
     private HttpEntity getUserData(String username) throws ClientProtocolException, IOException{
+    	//set up the url to send to
         String urlBase = "http://gardener.gatech.edu/whereami/getUserAP.php?User=";
         //TODO escape things somewhere 
         String url = urlBase + username;
+        
+        //set up the http stuff
         HttpContext httpContext = new BasicHttpContext();
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(url);
         String page = "Page was not created check for an error";
         HttpResponse response = httpClient.execute(httpGet, httpContext);
+        
+        //check the status of the connection
         int statusCode = response.getStatusLine().getStatusCode();
         Log.d(TAG, "Status code: " +statusCode);
+        
+        //get the response
         HttpEntity entity = response.getEntity();
-        page = EntityUtils.toString(entity);        
+        page = EntityUtils.toString(entity);
+        
+        Log.d(TAG, "xml returned: " + page);
+        
         return entity;
         
     }
@@ -152,8 +191,38 @@ public class APIWifiDiscover extends DeviceDiscover {
             Log.e(TAG, e.toString());
         }
         
-        //set up the
+        //return null if fails
         return null;
+    }
+    
+    /**parses xml to get the client count of an AP
+     * 
+     * @param xml the xml to parse as an HttpEntity
+     * @return a number of clients connected (-1 if failed)
+     */
+    private int findImpressionsFromXML(HttpEntity xml) {
+        try {
+            //set up the document
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document dom = db.parse(xml.getContent());
+            
+            //get the subtree as a nodelist from the xml
+            NodeList nl = dom.getElementsByTagName("apinfo");
+            
+            //returns the number in the client count
+            return getIntValue((Element)nl.item(0), "clientcount");
+        } catch (ParserConfigurationException e) {
+            Log.e(TAG, e.toString());
+        } catch (IllegalStateException e) {
+            Log.e(TAG, e.toString());
+        } catch (SAXException e) {
+            Log.e(TAG, e.toString());
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
+        
+        //returns -1 if fails
+        return -1;
     }
     
     /**
@@ -185,22 +254,27 @@ public class APIWifiDiscover extends DeviceDiscover {
         return Integer.parseInt(getTextValue(ele,tagName));
     }
     
-    private String getAPData(String apName) throws ClientProtocolException, IOException{
-        String urlBase = "http://gardener.gatech.edu/whereami/getAPStatus.php?APName=";
-        //TODO escape things somewhere 
+    private HttpEntity getAPData(String apName) throws ClientProtocolException, IOException{
+    	//set up the url
+        String urlBase = "http://gardener.gatech.edu/whereami/getAPStatus.php?APName="; 
         String url = urlBase + apName;
         String page = "Page was not created check for an error";
+        
+        //set up the connection
         HttpContext httpContext = new BasicHttpContext();
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(url);
         
+        //get the api response
         HttpResponse response = httpClient.execute(httpGet, httpContext);
         int statusCode = response.getStatusLine().getStatusCode();
         Log.d(TAG, "Status code: " +statusCode);
-        
         HttpEntity entity = response.getEntity();
-        page = EntityUtils.toString(entity);        
-        return page;        
+        
+        page = EntityUtils.toString(entity);
+        Log.d(TAG, "ap data xml: " + page);
+        
+        return entity;        
     }
     
     private String findRouterMac(Context ctx){
