@@ -70,34 +70,41 @@ public class APIWifiDiscover extends DeviceDiscover {
         	Log.d(TAG, "username: " + username);
         	
         	//get the data from the api about which aps a user is connected to
-        	HttpEntity apiReturn = getUserData(username);
+        	HttpEntity apiUserReturn = getUserData(username);
         	String rmac = findRouterMac(ctx);
         	//a catch for debugging if mac returns as null
         	String apName;
-        	if(rmac.equals(null)) {
+        	if(rmac == null) {
         		rmac = "78:D6:F0:92:49:FE";
         		apName = "175-123";
+        		Log.i(TAG, "no mac address found");
         	} else {
-        		apName = findAPNamefromXML(rmac, apiReturn);
+        		apName = findAPNamefromXML(rmac, apiUserReturn);
         	}
         	
         	Log.d(TAG, "ap name: " + apName);
         	
         	//get the HttpEntity from the api call for ap data
-        	apiReturn = getAPData(apName);
+        	HttpEntity apiAPReturn = getAPData(apName);
         	
         	//parse the xml from the api call into what we need
-        	int currentImpressions = findImpressionsFromXML(apiReturn);
+        	int currentImpressions = findImpressionsFromXML(apiAPReturn);
         	
         	Log.d(TAG, "current impressions: " + currentImpressions);
+        	
+        	if(currentImpressions < 0) {
+        		return false;
+        	}
         	
         	//get a content resolver to deal with the database
         	ContentResolver cr = ctx.getContentResolver();
         	
+        	Log.d(TAG, "got content resolver");
+        	
         	//create the values class to send to the insert
     		ContentValues values = new ContentValues();
     		values.put("mac_addr", rmac);
-    		values.put("protocol", "api_wifi");
+    		values.put("protocol_found", "api_wifi");
     		//TODO: figure out and insert accuracy
     		if(lat > 0) {
     			values.put("latitude", lat);
@@ -106,6 +113,8 @@ public class APIWifiDiscover extends DeviceDiscover {
     			values.put("longitude", lon);
     		}
     		values.put("weight", currentImpressions);
+    		
+    		Log.d(TAG, "put the proper values into the contentvalues");
     		
     		//call the insert method
     		Uri ret = cr.insert(LAWNStorage.CONTENT_URI, values);
@@ -148,9 +157,9 @@ public class APIWifiDiscover extends DeviceDiscover {
         
         //get the response
         HttpEntity entity = response.getEntity();
-        page = EntityUtils.toString(entity);
+        /*page = EntityUtils.toString(entity);
         
-        Log.d(TAG, "xml returned: " + page);
+        Log.d(TAG, "xml returned: " + page);*/
         
         return entity;
         
@@ -208,10 +217,13 @@ public class APIWifiDiscover extends DeviceDiscover {
      * @return a number of clients connected (-1 if failed)
      */
     private int findImpressionsFromXML(HttpEntity xml) {
+    	Log.d(TAG, "finding impressions");
         try {
             //set up the document
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document dom = db.parse(xml.getContent());
+            
+            Log.d(TAG, "after build document");
             
             //get the subtree as a nodelist from the xml
             NodeList nl = dom.getElementsByTagName("apinfo");
@@ -278,8 +290,10 @@ public class APIWifiDiscover extends DeviceDiscover {
         Log.d(TAG, "Status code: " +statusCode);
         HttpEntity entity = response.getEntity();
         
-        page = EntityUtils.toString(entity);
-        Log.d(TAG, "ap data xml: " + page);
+        /*stuff for debugging
+        HttpEntity entity2 = entity;
+        page = EntityUtils.toString(entity2);
+        Log.d(TAG, "ap data xml: " + page);*/
         
         return entity;        
     }

@@ -30,7 +30,7 @@ public class LAWNStorage extends ContentProvider {
     
     //define the content uris
     public static final Uri CONTENT_URI = 
-    		Uri.parse("content://edu.gatech.cs4261.LAWN.LAWNStorage");
+    		Uri.parse("content://" + AUTHORITY);
     public static final Uri CONTENT_URI_DEVICES = 
     		Uri.parse("content://" + AUTHORITY + "/" + DEVICES_TABLE_NAME);
     public static final Uri CONTENT_URI_DETECTIONS = 
@@ -44,7 +44,7 @@ public class LAWNStorage extends ContentProvider {
     	um = new UriMatcher(UriMatcher.NO_MATCH);
     	
     	//set up query matches
-    	um.addURI(AUTHORITY, "", DEFAULT);
+    	um.addURI("content://" + AUTHORITY, "", DEFAULT);
     }
 
     /* this class helps open, create, and upgrade the database file*/
@@ -56,22 +56,24 @@ public class LAWNStorage extends ContentProvider {
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
+			Log.d(TAG, "making the table");
 			// execute the SQL to create the devices table
 			db.execSQL("CREATE TABLE " + DEVICES_TABLE_NAME + " ("
-                    + "uid INTEGER PRIMARY KEY,"
-                    + "mac_addr TEXT,"
+					+ "_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + "mac_addr TEXT, "
                     + "protocol_found TEXT"
                     + ");");
 			
 			// execute the SQL to create the detections table
 			db.execSQL("CREATE TABLE " + DETECTIONS_TABLE_NAME + " ("
+					+ "_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + "uid INTEGER,"
                     + "accuracy INTEGER,"
                     + "latitude REAL,"
                     + "longitude REAL,"
                     + "time_logged TEXT,"
                     + "weight INTEGER, "
-                    + "FOREIGN KEY(uid) REFERENCES " + DEVICES_TABLE_NAME + "(uid)"
+                    + "FOREIGN KEY(uid) REFERENCES " + DEVICES_TABLE_NAME + "(_id)"
                     + ");");
 		}
 
@@ -105,10 +107,14 @@ public class LAWNStorage extends ContentProvider {
 
 	@Override
 	public Uri insert(Uri uri, ContentValues initValues) {
+		Log.d(TAG, "inserting into the database");
 		/* validate the uri*/
+		/*Log.d(TAG, "uri match result: " + um.match(uri));
 		if(um.match(uri) != DEFAULT) {
 			throw new IllegalArgumentException("Unknown URI " + uri);
-		}
+		}*/
+		
+		Log.d(TAG, "uri matched");
 		
 		/* make sure the content values aren't null*/
 		ContentValues values;
@@ -116,6 +122,7 @@ public class LAWNStorage extends ContentProvider {
 			values = new ContentValues(initValues);
 		} else {
 			values = new ContentValues();
+			Log.d(TAG, "content values were null");
 		}
 		
 		/* make sure all the values are there*/
@@ -146,9 +153,11 @@ public class LAWNStorage extends ContentProvider {
 			values.put("weight", 1);
 		}
 		
+		Log.d(TAG, "after checked values to add");
+		
 		//get the current datetime and convert it into the proper format
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-		String now = (String) DateFormat.format("yyyy/MM/dd HH:mm:ss", cal);
+		String now = (String) DateFormat.format("yyyy/MM/dd hh:mm:ss", cal);
 		
 		Log.d(TAG, "NOW: " + now);
 		
@@ -158,7 +167,7 @@ public class LAWNStorage extends ContentProvider {
 		//split off the devices table values
 		ContentValues devValues = new ContentValues();
 		devValues.put("mac_addr", values.getAsString("mac_addr"));
-		devValues.put("protocol", values.getAsString("protocol_found"));
+		devValues.put("protocol_found", values.getAsString("protocol_found"));
 		
 		/* check if a matching device is already in the database and
 		 * insert the device if it isn't*/
@@ -186,38 +195,6 @@ public class LAWNStorage extends ContentProvider {
 		//only reaches this if something went wrong
 		throw new SQLException("Failed to insert data into " + uri);
 	}
-	
-	/*make the custom outside facing insert for Reid*/
-	public Uri insert(String mac, String protocol, int accuracy, 
-			double lat, double lon, int weight) {
-		//create the values class to send to the insert
-		ContentValues values = new ContentValues();
-		
-		//add the values to the values class
-		if(mac != null) {
-			values.put("mac_addr", mac);
-		}
-		if(protocol != null) {
-			values.put("protocol", protocol);
-		}
-		if(accuracy > 0) {
-			values.put("accuracy", accuracy);
-		}
-		if(lat > 0) {
-			values.put("latitude", lat);
-		}
-		if(lon > 0) {
-			values.put("longitude", lon);
-		}
-		if(weight >= 0) {
-			values.put("weight", weight);
-		}
-		
-		//call the internal insert method
-		Uri ret = insert(CONTENT_URI, values);
-		
-		return ret;
-	}
 
 	@Override
 	public boolean onCreate() {
@@ -242,7 +219,6 @@ public class LAWNStorage extends ContentProvider {
 		}*/
 		
 		//TODO: make the query
-		Log.e(TAG, "THIS METHOD SHOULD NEVER BE CALLED");
 		
 		return null;
 	}
