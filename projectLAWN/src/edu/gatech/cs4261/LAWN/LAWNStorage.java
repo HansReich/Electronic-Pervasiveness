@@ -1,6 +1,7 @@
 package edu.gatech.cs4261.LAWN;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.TimeZone;
 
 import android.content.ContentProvider;
@@ -15,6 +16,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import edu.gatech.cs4261.LAWN.Log;
 
@@ -27,6 +29,8 @@ public class LAWNStorage extends ContentProvider {
     private static final String DETECTIONS_TABLE_NAME = "detections";
     private static final UriMatcher um;
     private static final String AUTHORITY = "edu.gatech.cs4261.LAWN.LAWNStorage";
+    
+    private static HashMap<String, String> DbProjectionMap;
     
     //define the content uris
     public static final Uri CONTENT_URI = 
@@ -213,14 +217,24 @@ public class LAWNStorage extends ContentProvider {
 		qb.setTables(DEVICES_TABLE_NAME + " JOIN " + DETECTIONS_TABLE_NAME + 
 				"ON (" + DEVICES_TABLE_NAME + ".uid = " + DETECTIONS_TABLE_NAME + ".uid)");
 		
-		/* TODO: check for what query it is?
-		if(um.match(uri) == SPECIFIC_MESSAGE) {
-			
-		}*/
+		//set the projection map
+		qb.setProjectionMap(DbProjectionMap);
 		
-		//TODO: make the query
+		//set the default sort order if one isn't provided
+		String orderBy;
+		if(TextUtils.isEmpty(sortOrder)) {
+			orderBy = "time_logged DESC";
+		} else {
+			orderBy = sortOrder;
+		}
 		
-		return null;
+		//get the database and run the query
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, orderBy);
+		
+		//tell the cursor to watch the uri for changes
+		c.setNotificationUri(getContext().getContentResolver(), uri);
+		return c;
 	}
 
 	@Override
