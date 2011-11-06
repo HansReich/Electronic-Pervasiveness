@@ -24,6 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="56 impressions" 
+        android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/all_time_label"
         android:layout_alignTop="@id/all_time_label" />
         
@@ -31,7 +32,7 @@
         android:id="@+id/today_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/today" 
+        android:text="@string/today"
         android:layout_below="@id/all_time_label" />
         
     <TextView
@@ -39,6 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="12 impressions" 
+        android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/today_label"
         android:layout_alignTop="@id/today_label" />
         
