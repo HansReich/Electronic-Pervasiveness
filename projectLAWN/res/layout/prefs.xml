@@ -11,15 +11,42 @@
         android:layout_height="wrap_content"
         android:text="@string/prefs_title" 
         android:layout_centerHorizontal="true" />
+    
+    <TextView
+        android:id="@+id/ScanLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose what services to scan:"
+        android:layout_marginTop="10dp" 
+        android:layout_below="@id/title" />
         
     <CheckBox
-        android:id="@+id/OptionCheck"
-        android:text="Some Option"
+        android:id="@+id/WifiCheck"
+        android:text="Wifi"
         android:textSize="12sp"
-        android:onClick="onOptionClicked" 
         android:layout_width="match_parent" 
         android:layout_marginLeft="5dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title" />
+        android:layout_below="@id/ScanLabel" />
+        
+    <CheckBox
+		android:id="@+id/BTCheck"
+		android:text="Bluetooth"
+		android:textSize="12sp"
+		android:layout_width="match_parent" 
+		android:layout_marginLeft="5dp" 
+		android:layout_height="wrap_content"
+		android:layout_below="@id/WifiCheck">
+	</CheckBox>
+	
+	<Button
+		android:id="@+id/SavePrefs"
+		android:text="Save"
+		android:textSize="12sp"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="20dp"
+		android:layout_below="@id/BTCheck"  />
 
 </RelativeLayout>
