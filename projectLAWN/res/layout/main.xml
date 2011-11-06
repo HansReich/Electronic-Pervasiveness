@@ -78,6 +78,15 @@
         android:layout_toRightOf="@id/btnHistory" />
         
     <Button
+        android:id="@+id/btnStats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onStatsClicked"
+        android:text="Update Statistics"
+        android:layout_alignTop="@id/btnPref"
+        android:layout_toRightOf="@id/btnPref" />
+        
+    <Button
         android:id="@+id/btnScan"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

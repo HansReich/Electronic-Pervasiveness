@@ -71,7 +71,7 @@ public class LAWNStorage extends ContentProvider {
 			// execute the SQL to create the detections table
 			db.execSQL("CREATE TABLE " + DETECTIONS_TABLE_NAME + " ("
 					+ "_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + "uid INTEGER,"
+                    + "dev_id INTEGER,"
                     + "accuracy INTEGER,"
                     + "latitude REAL,"
                     + "longitude REAL,"
@@ -184,7 +184,7 @@ public class LAWNStorage extends ContentProvider {
 		detValues.put("longitude", values.getAsDouble("longitude"));
 		detValues.put("weight", values.getAsInteger("weight"));
 		detValues.put("time_logged", now);
-		detValues.put("uid", devUID);
+		detValues.put("dev_id", devUID);
 		
 		//insert the detection into the database
 		long detRowId = db.insertWithOnConflict(DETECTIONS_TABLE_NAME, null, detValues, SQLiteDatabase.CONFLICT_FAIL);
@@ -215,7 +215,7 @@ public class LAWNStorage extends ContentProvider {
 		
 		//set the table(s) to query on
 		qb.setTables(DEVICES_TABLE_NAME + " JOIN " + DETECTIONS_TABLE_NAME + 
-				"ON (" + DEVICES_TABLE_NAME + ".uid = " + DETECTIONS_TABLE_NAME + ".uid)");
+				"ON (" + DEVICES_TABLE_NAME + "._id = " + DETECTIONS_TABLE_NAME + ".dev_id)");
 		
 		//set the projection map
 		qb.setProjectionMap(DbProjectionMap);

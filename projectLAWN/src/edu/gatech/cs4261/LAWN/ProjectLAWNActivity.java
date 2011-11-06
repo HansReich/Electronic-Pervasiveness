@@ -1,9 +1,15 @@
 package edu.gatech.cs4261.LAWN;
 
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.TimeZone;
+
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -44,6 +50,10 @@ public class ProjectLAWNActivity extends CustomActivity {
 		/* pull up new screen with preferences on it*/
 		Button btnPref = (Button)findViewById(R.id.btnPref);
 		btnPref.setOnClickListener(btnPrefListener);
+		
+		/* update the stats on the screen*/
+		Button btnStats = (Button)findViewById(R.id.btnStats);
+		btnStats.setOnClickListener(btnStatsListener);
 		
 		setupLocation();
 		/*this.registerReceiver(this.myWifiReceiver,
@@ -148,6 +158,60 @@ public class ProjectLAWNActivity extends CustomActivity {
 			ctx.startActivity(i);
 		}
     };
+    
+    /** what to do when update statistics is clicked */
+    private OnClickListener btnStatsListener = new OnClickListener() {
+		public void onClick(View v) {
+			Log.d(TAG, "Update Statistics clicked");
+			/*TODO: update the stats on the screen*/
+			
+			//set up the query
+			String[] projection = new String[] {
+											"mac_addr",
+											"protocol_found",
+											"accuracy",
+											"latitude",
+											"longitude",
+											"time_logged",
+											"weight"
+										};
+			ContentResolver cr = getContentResolver();
+			
+			//query the database (no selection parameters or sort order given)
+			Cursor q = cr.query(LAWNStorage.CONTENT_URI, projection, null, null, null);
+			
+			//find the column indices needed
+			int timeCol = q.getColumnIndex("time_logged");
+			int weightCol = q.getColumnIndex("weight");
+			
+			//TODO: find the latest scan and post it
+			q.moveToFirst();
+			int currWeight = q.getInt(timeCol);
+			Log.d(TAG, "current weight = " + currWeight);
+			
+			//TODO: find today's scans, total them, and post it
+			q.moveToFirst();
+			//get the current date for reference
+			Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+			//TODO: parse the timestamp from the table into a comparable format
+			/*do {
+				String timestamp = q.getString(timeCol);
+				DateFormat df = DateFormat.getDateInstance("yyyy/MM/dd hh:mm:ss");
+				Calendar iCal = df.parse(timestamp);
+			} while(q.moveToNext() || cal.after(iCal));*/
+			
+			//TODO: total all the scans in the database and post it
+			q.moveToFirst();
+			int totalWeight = 0;
+			do {
+				totalWeight += q.getInt(weightCol);
+			} while(q.moveToNext());
+			Log.d(TAG, "total weight = " + totalWeight);
+			
+			Log.i(TAG, "stats updated");
+		}
+    };
+    
     public void setupLocation(){
     	Log.v(TAG, "Setting up Location Services");
 		/* Use the LocationManager class to obtain GPS locations */
