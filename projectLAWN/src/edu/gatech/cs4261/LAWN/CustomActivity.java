@@ -18,6 +18,11 @@ public class CustomActivity extends Activity {
 		return app.getDiscover();
 	}
 	
+	public void setDiscover(DeviceDiscover disc) {
+		LAWNApp app = (LAWNApp)getApplication();
+		app.setDiscover(disc);
+	}
+	
 	public SharedPreferences getPreferences() {
 		LAWNApp app = (LAWNApp)getApplication();
 		return app.getPreferences();

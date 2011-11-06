@@ -68,7 +68,19 @@ public class ProjectLAWNActivity extends CustomActivity {
 			//get the current location of the device
 			Location loc = getLocation();
 			
+			//check what the scan setting is set to (wifi is default)
+			String scanSet = getPreferences().getString("ScanSetting", "Wifi");
 			
+			//change the device discover to whatever the setting is
+			if(scanSet.equals("Bluetooth")) {
+				//if setting is set to bluetooth then change the discover to the bluetooth one
+				setDiscover(new BluetoothDiscover());
+			} else {
+				//if it's not bluetooth use wifi by default
+				setDiscover(new APIWifiDiscover());
+			}
+			
+			//perform the scan
 			if(loc != null) {
 				getDiscover().scan(loc.getLatitude(),loc.getLongitude(),ctx);
 			} else {
