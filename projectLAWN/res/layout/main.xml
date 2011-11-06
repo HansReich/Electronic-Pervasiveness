@@ -44,6 +44,22 @@
         android:layout_toRightOf="@id/today_label"
         android:layout_alignTop="@id/today_label" />
         
+    <TextView
+        android:id="@+id/current_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Current: "
+        android:layout_below="@id/today_label" />
+        
+    <TextView
+        android:id="@+id/current_stat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="7 impressions" 
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/current_label"
+        android:layout_alignTop="@id/current_label" />
+        
     <Button
         android:id="@+id/btnHistory"
         android:layout_width="wrap_content"

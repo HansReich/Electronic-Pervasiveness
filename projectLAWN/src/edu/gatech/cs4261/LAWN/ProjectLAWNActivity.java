@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 import  edu.gatech.cs4261.LAWN.Log;
 
@@ -82,11 +83,27 @@ public class ProjectLAWNActivity extends CustomActivity {
 			
 			//perform the scan
 			if(loc != null) {
-				getDiscover().scan(loc.getLatitude(),loc.getLongitude(),ctx);
+				Boolean success = getDiscover().scan(loc.getLatitude(),loc.getLongitude(),ctx);
+				
+				if(success) {
+					Toast display = Toast.makeText(getBaseContext(), "Successful scan", Toast.LENGTH_SHORT);
+					display.show();
+				} else {
+					Toast display = Toast.makeText(getBaseContext(), "Unsuccessful scan", Toast.LENGTH_SHORT);
+					display.show();
+				}
 			} else {
 				Log.d(TAG, "loc returned null which means the provider is " +
 						"currently disabled");
-				getDiscover().scan(0,0,ctx);
+				Boolean success = getDiscover().scan(0,0,ctx);
+				
+				if(success) {
+					Toast display = Toast.makeText(getBaseContext(), "Successful scan but no location", Toast.LENGTH_SHORT);
+					display.show();
+				} else {
+					Toast display = Toast.makeText(getBaseContext(), "Unsuccessful scan", Toast.LENGTH_SHORT);
+					display.show();
+				}
 			}
 		}
 

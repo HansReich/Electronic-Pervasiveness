@@ -48,21 +48,51 @@ public class APIWifiDiscover extends DeviceDiscover {
     }
 
     @Override
+    /**scan scans the router a user is connected to for impressions 
+     * 
+     * @param lat is the current latitude of the device
+     * @param lon is the current longitude of the device
+     * @param ctx is the context scan was called in
+     * @return returns a boolean of success or failure
+     */
     public boolean scan(double lat, double lon, Context ctx) {
         String apPage ="Some ap error";
         String routerMac = "No Mac Found";
         try {
-            apPage = getAPData("50-348");
+        	//get the username that's logged in
+        	String username = ((CustomActivity) ctx).getPreferences().getString("username", null);
+        	if(username.equals(null)) {
+        		Log.d(TAG, "username was not found");
+        		return false;
+        	}
+        	
+        	Log.d(TAG, "username: " + username);
+        	
+        	//get the data from the api about which aps a user is connected to
+        	HttpEntity apiReturn = getUserData(username);
+        	String rmac = findRouterMac(ctx);
+        	String apName = findAPNamefromXML(rmac, apiReturn);
+        	
+        	Log.d(TAG, "ap name: " + apName);
+        	
+        	//get the data about the ap
+            apPage = getAPData(apName);
         } catch (ClientProtocolException e) {
             Log.e(TAG, e.toString());
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         }
-        routerMac = findRouterMac(ctx);
         Log.d(TAG, apPage);
         return false;
     }
     
+    /**getUserData gets the ap connection data about a user from the api 
+     * 
+     * @param username username that you want to check
+     * @return returns an httpentity that contains the xml from the api
+     * @throws ClientProtocolException
+     * @throws IOException
+     */
     private HttpEntity getUserData(String username) throws ClientProtocolException, IOException{
         String urlBase = "http://gardener.gatech.edu/whereami/getUserAP.php?User=";
         //TODO escape things somewhere 
