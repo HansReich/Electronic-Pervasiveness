@@ -1,7 +1,10 @@
 package edu.gatech.cs4261.LAWN;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 import android.content.BroadcastReceiver;
@@ -19,6 +22,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import  edu.gatech.cs4261.LAWN.Log;
@@ -184,29 +188,55 @@ public class ProjectLAWNActivity extends CustomActivity {
 			int timeCol = q.getColumnIndex("time_logged");
 			int weightCol = q.getColumnIndex("weight");
 			
-			//TODO: find the latest scan and post it
-			q.moveToFirst();
-			int currWeight = q.getInt(timeCol);
-			Log.d(TAG, "current weight = " + currWeight);
+			//set up the text fields to be edited
+			TextView tAllTime = (TextView)findViewById(R.id.all_time_stat);
+			TextView tToday = (TextView)findViewById(R.id.today_stat);
+			TextView tCurrent = (TextView)findViewById(R.id.current_stat);
 			
-			//TODO: find today's scans, total them, and post it
+			//find the latest scan and post it
+			q.moveToFirst();
+			int currWeight = q.getInt(weightCol);
+			Log.d(TAG, "current weight = " + currWeight);
+			Log.d(TAG, "current timestamp = " + q.getString(timeCol));
+			tCurrent.setText(currWeight + " impressions");
+			
+			//find today's scans, total them, and post it
 			q.moveToFirst();
 			//get the current date for reference
 			Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-			//TODO: parse the timestamp from the table into a comparable format
-			/*do {
-				String timestamp = q.getString(timeCol);
-				DateFormat df = DateFormat.getDateInstance("yyyy/MM/dd hh:mm:ss");
-				Calendar iCal = df.parse(timestamp);
-			} while(q.moveToNext() || cal.after(iCal));*/
 			
-			//TODO: total all the scans in the database and post it
+			//set up the variables needed
+			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+			Date date;
+			int todayWeight = 0;
+			
+			try {
+				do {
+					//parse the timestamp for the current entry
+					String timestamp = q.getString(timeCol);
+					date = format.parse(timestamp);
+					
+					//add the weight to the running total
+					todayWeight += q.getInt(weightCol);
+				} while(q.moveToNext() || cal.after(date));
+			} catch (ParseException e) {
+				Log.e(TAG, e.toString());
+			}
+			
+			//put today's scan count up on the screen
+			tToday.setText(todayWeight + " impressions");
+			
+			//total all the scans in the database and post it
 			q.moveToFirst();
 			int totalWeight = 0;
 			do {
 				totalWeight += q.getInt(weightCol);
 			} while(q.moveToNext());
 			Log.d(TAG, "total weight = " + totalWeight);
+			tAllTime.setText(totalWeight + " impressions");
+			
+			//close the cursor
+			q.close();
 			
 			Log.i(TAG, "stats updated");
 		}

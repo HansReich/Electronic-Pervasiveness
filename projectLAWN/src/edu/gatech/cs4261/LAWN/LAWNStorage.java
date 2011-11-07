@@ -77,7 +77,7 @@ public class LAWNStorage extends ContentProvider {
                     + "longitude REAL,"
                     + "time_logged TEXT,"
                     + "weight INTEGER, "
-                    + "FOREIGN KEY(uid) REFERENCES " + DEVICES_TABLE_NAME + "(_id)"
+                    + "FOREIGN KEY(dev_id) REFERENCES " + DEVICES_TABLE_NAME + "(_id)"
                     + ");");
 		}
 
@@ -215,7 +215,7 @@ public class LAWNStorage extends ContentProvider {
 		
 		//set the table(s) to query on
 		qb.setTables(DEVICES_TABLE_NAME + " JOIN " + DETECTIONS_TABLE_NAME + 
-				"ON (" + DEVICES_TABLE_NAME + "._id = " + DETECTIONS_TABLE_NAME + ".dev_id)");
+				" ON (" + DEVICES_TABLE_NAME + "._id = " + DETECTIONS_TABLE_NAME + ".dev_id)");
 		
 		//set the projection map
 		qb.setProjectionMap(DbProjectionMap);
