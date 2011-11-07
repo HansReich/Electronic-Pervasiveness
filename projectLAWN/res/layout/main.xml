@@ -23,7 +23,7 @@
         android:id="@+id/all_time_stat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="56 impressions" 
+        android:text="" 
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/all_time_label"
         android:layout_alignTop="@id/all_time_label" />
@@ -39,7 +39,7 @@
         android:id="@+id/today_stat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="12 impressions" 
+        android:text="" 
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/today_label"
         android:layout_alignTop="@id/today_label" />
@@ -55,7 +55,7 @@
         android:id="@+id/current_stat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="7 impressions" 
+        android:text="" 
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/current_label"
         android:layout_alignTop="@id/current_label" />
