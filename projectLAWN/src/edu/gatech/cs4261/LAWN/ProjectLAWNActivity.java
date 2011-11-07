@@ -37,6 +37,9 @@ public class ProjectLAWNActivity extends CustomActivity {
 	private LocationListener mlocListener;
 	
     /** Called when the activity is first created. */
+    /* (non-Javadoc)
+     * @see edu.gatech.cs4261.LAWN.CustomActivity#onCreate(android.os.Bundle)
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
