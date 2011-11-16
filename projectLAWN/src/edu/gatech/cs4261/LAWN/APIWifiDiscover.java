@@ -78,11 +78,17 @@ public class APIWifiDiscover extends DeviceDiscover {
         		rmac = "78:D6:F0:92:49:FE";
         		apName = "175-123";
         		Log.i(TAG, "no mac address found");
+        		return false;
         	} else {
         		apName = findAPNamefromXML(rmac, apiUserReturn);
         	}
         	
         	Log.d(TAG, "ap name: " + apName);
+        	
+        	//ap not found
+        	if(apName == null) {
+        	    return false;
+        	}
         	
         	//get the HttpEntity from the api call for ap data
         	HttpEntity apiAPReturn = getAPData(apName);
@@ -142,7 +148,7 @@ public class APIWifiDiscover extends DeviceDiscover {
     	//set up the url to send to
         String urlBase = "http://gardener.gatech.edu/whereami/getUserAP.php?User=";
         //TODO escape things somewhere 
-        String url = urlBase + username;
+        String url = urlBase + username.toLowerCase();
         
         //set up the http stuff
         HttpContext httpContext = new BasicHttpContext();
